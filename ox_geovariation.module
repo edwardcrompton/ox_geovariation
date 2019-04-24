@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\ox_geovariation\GeoVariations;
 
 /**
  * Implements hook_help().
@@ -21,4 +22,11 @@ function ox_geovariation_help($route_name, RouteMatchInterface $route_match) {
 
     default:
   }
+}
+
+/**
+ *
+ */
+function ox_geovariation_preprocess_paragraph__call_to_action(&$variables) {
+  GeoVariations::attachCTALinks($variables);
 }
