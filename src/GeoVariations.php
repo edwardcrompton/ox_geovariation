@@ -12,14 +12,15 @@ namespace Drupal\ox_geovariation;
 class GeoVariations {
 
   /**
-   * Attaches Call to Action links to the js settings for a paragraph.
+   * Attaches Call to Action geo variation javascript for a paragraph.
    *
    * @param array $variables
    *  Array of variables from a preprocess function.
    */
-  public static function attachCTALinks(array &$variables) {
+  public static function initialiseCTALinks(array &$variables) {
     $affiliateLinks = GeoVariations::loadCTALinks($variables['elements']['#paragraph']);
     $variables['#attached']['drupalSettings']['affiliateCTALinks'] = $affiliateLinks;
+    $variables['#attached']['library'][] = 'ox_geovariation/call_to_action';
   }
   
   /**

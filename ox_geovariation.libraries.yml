@@ -1,0 +1,8 @@
+call_to_action:
+  version: 1.x
+  js:
+    js/call_to_action.js: {}
+  dependencies:
+    - core/drupalSettings
+    - core/jQuery
+    - core/drupal
