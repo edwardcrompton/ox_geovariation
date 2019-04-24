@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains ox_geovariation.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ox_geovariation_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ox_geovariation module.
+    case 'help.page.ox_geovariation':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides variations in the user interface based on geo location') . '</p>';
+      return $output;
+
+    default:
+  }
+}
