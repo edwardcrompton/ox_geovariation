@@ -1,7 +1,3 @@
-country_code_storage:
-  version: 1.x
-  js:
-    js/country_code_storage.js: {}
 call_to_action:
   version: 1.x
   js:
@@ -11,4 +7,11 @@ call_to_action:
     - core/jquery
     - core/jquery.once
     - core/drupal
-    - ox_geovariation/country_code_storage
+    - ox_geovariation/geo
+geo:
+  version: 1.x
+  js:
+    js/geo.js: {}
+    js/geo_helpers.js: {}
+  dependencies:
+    - core/drupalSettings
