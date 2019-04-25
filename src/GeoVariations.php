@@ -48,8 +48,8 @@ class GeoVariations {
       $link = $affiliate->get('field_affiliate_url')->value;
       $affiliateTitle = $affiliate->get('field_affiliate_title')->value;
       $affiliateLinks[$countryCode] = array(
-        $link,
-        $affiliateTitle,
+        'url' => $link,
+        'title' => $affiliateTitle,
       );
     }
 
