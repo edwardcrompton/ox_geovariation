@@ -33,6 +33,13 @@ that country code from drupalSettings.affiliateCTALinks. It then makes the
 necessary changes to the call to action HTML link to display the geo appropriate
 link.
 
+#### Testing
+
+In Lando, nginx is set up to use a URL query parameter 'testip' as the basis of
+the geo location if available. This allows the two letter country code to be
+forced in our local environments. Just put ?testip=xx.xx.xx.xx on the end of the
+URL you are requesting.
+
 #### Extending this module.
 
 In order to add additional geo variations, there are two main steps to extending

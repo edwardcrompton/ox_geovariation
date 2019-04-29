@@ -8,8 +8,15 @@
   var countryCode = oxGeovariation.get();
 
   if (!countryCode) {
+    var url = '/geo';
+    var ip = oxGeovariation.ipFromURL();
+
+    if (ip) {
+      url += '?testip=' + ip;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/geo', true);
+    xhr.open('GET', url, true);
 
     xhr.onload = function () {
       if (xhr.readyState === 4) {
