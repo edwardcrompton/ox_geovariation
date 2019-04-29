@@ -5,8 +5,7 @@
         var countryCode = oxGeovariation.get();
         var link = drupalSettings.affiliateCTALinks[countryCode]['url'];
         var title = drupalSettings.affiliateCTALinks[countryCode]['title'];
-        $('a', this).attr('href', link);
-        $('a', this).html(title);
+        $('a', this).attr('href', link).html(title);
       });
     }
   }
