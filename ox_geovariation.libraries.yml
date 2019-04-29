@@ -11,7 +11,7 @@ call_to_action:
 geo:
   version: 1.x
   js:
-    js/geo.js: {}
     js/geo_helpers.js: {}
+    js/geo.js: {}
   dependencies:
     - core/drupalSettings

@@ -2,7 +2,6 @@
   Drupal.behaviors.call_to_action = {
     attach: function (context, settings) {
       $('.paragraph--type--call-to-action', context).once('geo-variation').each(function () {
-        //var countryCode = ox_geovariation_get_country_code();
         var countryCode = oxGeovariation.get();
         var link = drupalSettings.affiliateCTALinks[countryCode]['url'];
         var title = drupalSettings.affiliateCTALinks[countryCode]['title'];

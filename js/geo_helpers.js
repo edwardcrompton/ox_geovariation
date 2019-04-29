@@ -8,11 +8,11 @@ var oxGeovariation = {
   storage: sessionStorage,
   itemName: 'country-code',
 
-  get() {
-    return storage.getItem(itemName);
+  get: function() {
+    return this.storage.getItem(this.itemName);
   },
 
-  set(countryCode) {
-    return storage.setItem(itemName, countryCode);
+  set: function(countryCode) {
+    return this.storage.setItem(this.itemName, countryCode);
   }
 };

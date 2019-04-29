@@ -5,9 +5,7 @@
  *  The idea being that a special country code header has been added by nginx.
  */
 (function () {
-  var itemName = 'country-code';
-  var storage = sessionStorage;
-  var countryCode = storage.getItem(itemName)
+  var countryCode = oxGeovariation.get();
 
   if (!countryCode) {
     var xhr = new XMLHttpRequest();
@@ -17,7 +15,7 @@
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           countryCode = xhr.getResponseHeader('Country-Code');
-          storage.setItem(itemName, countryCode);
+          oxGeovariation.set(countryCode);
         }
         else {
           console.error(xhr.statusText)
