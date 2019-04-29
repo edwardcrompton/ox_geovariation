@@ -6,6 +6,7 @@
  */
 (function () {
   var countryCode = oxGeovariation.get();
+  var headerName = 'X-Country-Code';
 
   if (!countryCode) {
     var url = '/geo';
@@ -21,7 +22,7 @@
     xhr.onload = function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          countryCode = xhr.getResponseHeader('Country-Code');
+          countryCode = xhr.getResponseHeader(headerName);
           oxGeovariation.set(countryCode);
         }
         else {
