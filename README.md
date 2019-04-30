@@ -9,7 +9,7 @@ Geo variations are usually editable and are stored in the database. For example,
 in the case of calls to action, there is a Call to Action paragraph which
 editors can use to add different call to action links for different countries.
 Countries are identified using a two letter country code, e.g. 'US' for the
-United States or 'GB' for Great Britain.
+United States or 'IT' for Italy.
 
 Javascript is used to query the page response headers in order to retreive the
 two letter country code. This means that server side processing in PHP is not
