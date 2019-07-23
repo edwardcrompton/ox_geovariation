@@ -28,7 +28,7 @@ function ox_geovariation_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_preprocess_paragraph__TYPE().
  */
 function ox_geovariation_preprocess_paragraph__call_to_action(&$variables) {
-  GeoVariations::initialiseCTALinks($variables);
+  GeoVariations::initialiseCtaLinks($variables);
 }
 
 /**

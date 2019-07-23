@@ -1,16 +1,12 @@
 <?php
-/**
- * @file
- *  Contains class GeoVariations.
- */
 
 namespace Drupal\ox_geovariation;
 
 use Drupal\Core\Url;
-use Drupal\Core\Link;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
- * Class GeoVariations
+ * Class GeoVariations.
  */
 class GeoVariations {
 
@@ -18,16 +14,16 @@ class GeoVariations {
    * Attaches Call to Action geo variation javascript for a paragraph.
    *
    * @param array $variables
-   *  Array of variables from a preprocess function.
+   *   Array of variables from a preprocess function.
    */
-  public static function initialiseCTALinks(array &$variables) {
+  public static function initialiseCtaLinks(array &$variables) {
     $paragraph = $variables['elements']['#paragraph'];
 
-    $affiliateLinks = static::loadCTALinks($paragraph);
+    $affiliateLinks = static::loadCtaLinks($paragraph);
     $variables['#attached']['drupalSettings']['affiliateCTALinks'] = $affiliateLinks;
     $variables['#attached']['library'][] = 'ox_geovariation/call_to_action';
 
-    $defaultLink = static::defaultCTALink($paragraph);
+    $defaultLink = static::defaultCtaLink($paragraph);
     $variables['default_link'] = $defaultLink;
   }
 
@@ -35,7 +31,7 @@ class GeoVariations {
    * Attaches the Donation link geo variation javascript for menu links.
    *
    * @param array $variables
-   *  An array of variables from a preprocess function.
+   *   An array of variables from a preprocess function.
    */
   public static function initialiseDonationLinks(array &$variables) {
     $affiliateLinks = static::loadDonationLinks();
@@ -47,15 +43,16 @@ class GeoVariations {
    * Creates a link using the default Call to Action fields.
    *
    * @param \Drupal\paragraphs\Entity\Paragraph $paragraph
-   *  The paragraph object of type call_to_action.
+   *   The paragraph object of type call_to_action.
    *
-   * @return type
+   * @return mixed
+   *   The default call to action link.
    */
-  public static function defaultCTALink(\Drupal\paragraphs\Entity\Paragraph $paragraph) {
-    $text = t($paragraph->get('field_title')->value);
+  public static function defaultCtaLink(Paragraph $paragraph) {
+    $title = $paragraph->get('field_title')->value;
     $url = Url::fromUri($paragraph->get('field_url')->value);
 
-    return \Drupal::l($text, $url);
+    return \Drupal::l($title, $url);
   }
 
   /**
@@ -76,7 +73,7 @@ class GeoVariations {
       $affiliateTitle = $node->get('title')->getString();
       $affiliateLinks[$countryCode] = [
         'href' => $node->get('field_url_donate')->getString(),
-        'title' => t('Donate via ' . $affiliateTitle),
+        'title' => t('Donate via @title', ['@title' => $affiliateTitle]),
       ];
     }
 
@@ -86,13 +83,13 @@ class GeoVariations {
   /**
    * Gets the Call to Action links for each country code and exposes them to js.
    *
-   * @param $paragraph
-   *  A call to action paragraph object.
+   * @param \Drupal\paragraphs\Entity\Paragraph $paragraph
+   *   A call to action paragraph object.
    *
-   * @return
-   *  An array of links relevant to affiliates.
+   * @return array
+   *   An array of links relevant to affiliates.
    */
-  public static function loadCTALinks(\Drupal\paragraphs\Entity\Paragraph $paragraph) {
+  public static function loadCtaLinks(Paragraph $paragraph) {
     $affiliates = $paragraph->get('field_affiliate_call_to_action')->referencedEntities();
 
     $affiliateLinks = [];
@@ -108,4 +105,5 @@ class GeoVariations {
 
     return $affiliateLinks;
   }
+
 }
