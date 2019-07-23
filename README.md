@@ -16,8 +16,8 @@ two letter country code. This means that server side processing in PHP is not
 aware of which country the user is in. In PHP we must create an array of _all_
 the possible geo variations and load them into an array that can be accessed
 with javascript. In the case of the Call to Action, this is done in
-GeoVariations::initialiseCTALinks. The array is keyed by country code and
-contains 'url' and 'title' keys with contain the call to action link url and
+GeoVariations::initialiseCtaLinks. The array is keyed by country code and
+contains 'href' and 'content' keys with contain the call to action link url and
 title. This array is stored in drupalSettings.affiliateCTALinks[] so that it is
 available in javascript.
 
@@ -29,7 +29,7 @@ by nginx. geo_helpers.js provides getter and setter methods that make reading
 and writing to the session storage slightly easier.
 
 call_to_action.js loads the country code and extracts the corresponding link for
-that country code from drupalSettings.affiliateCTALinks. It then makes the
+that country code from drupalSettings.affiliateCtaLinks. It then makes the
 necessary changes to the call to action HTML link to display the geo appropriate
 link.
 
@@ -39,6 +39,11 @@ In Lando, nginx is set up to use a URL query parameter 'testip' as the basis of
 the geo location if available. This allows the two letter country code to be
 forced in our local environments. Just put ?testip=xx.xx.xx.xx on the end of the
 URL you are requesting.
+
+Wherever you are on the site, geo.js makes an asynchronous request to the path
+/geo to get the Geo location data. This is then stored in Session Storage in the
+browser. You will need to manually clear session storage by closing the
+browser or though the browser dev tools in order to reset the test location.
 
 #### Extending this module.
 
@@ -56,6 +61,23 @@ This PHP method is responsible for:
 - Writing that array to drupalSettings using an appropriate property name.
 - Loading a javascript file that will carry out the modifications to the page
 specific to this type of geo variation -see below.
+
+The array must be structured in the following way:
+- The array must be keyed by the two letter country code in capitals.
+- Each value is a sub array keyed by the properties of the link to be rewritten,
+e.g:
+
+```
+'MX' =>
+  'href' => 'URL of the rewritten link'
+  'title' => 'Title property of the link (<a title="something")'
+  'content' => 'The text to be used for the link (inside <a></a>)
+'US' =>
+  etc...
+```
+
+Additional properties can be added to the array if they are handled in the
+switch statement in the alterLink function in geo_helpers.js.
 
 2. Modifying the page with jQuery
 

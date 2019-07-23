@@ -1,8 +1,9 @@
 /**
  * @file
- *  Reads the user's country code that has been stored in the session storage or
- *  attempts to fetch the country code from the HTTP headers if it isn't there.
- *  The idea being that a special country code header has been added by nginx.
+ *  Checks that the user's country code that has been stored in the session
+ *  storage and, if not, attempts to fetch the country code from the HTTP
+ *  headers in order to write it to session storage. The idea being that a
+ *  special country code header has been added by nginx.
  */
 (function () {
   var countryCode = oxGeovariation.get();
