@@ -51,6 +51,7 @@ var oxGeovariation = {
           }
         }
       }
+      linkElement.addClass('geovariation');
       return linkElement;
     }
     return false;
