@@ -23,12 +23,24 @@ class GeoVariations {
   public static function initialiseCTALinks(array &$variables) {
     $paragraph = $variables['elements']['#paragraph'];
 
-    $affiliateLinks = GeoVariations::loadCTALinks($paragraph);
+    $affiliateLinks = static::loadCTALinks($paragraph);
     $variables['#attached']['drupalSettings']['affiliateCTALinks'] = $affiliateLinks;
     $variables['#attached']['library'][] = 'ox_geovariation/call_to_action';
 
-    $defaultLink = GeoVariations::defaultCTALink($paragraph);
+    $defaultLink = static::defaultCTALink($paragraph);
     $variables['default_link'] = $defaultLink;
+  }
+
+  /**
+   * Attaches the Donation link geo variation javascript for menu links.
+   *
+   * @param array $variables
+   *  An array of variables from a preprocess function.
+   */
+  public static function initialiseDonationLinks(array &$variables) {
+    $affiliateLinks = static::loadDonationLinks();
+    $variables['#attached']['drupalSettings']['affiliateDonationLinks'] = $affiliateLinks;
+    $variables['#attached']['library'][] = 'ox_geovariation/donate';
   }
 
   /**
@@ -49,8 +61,26 @@ class GeoVariations {
   /**
    * Gets the donations link for each country code and exposes them to js.
    */
-  public function loadDonationLinks(\Drupal\paragraphs\Entity\Paragraph $paragraph) {
+  public static function loadDonationLinks() {
+    // We should cache this as it needs to run on every page.
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'oxfam_affiliate');
 
+    $nids = $query->execute();
+
+    $affiliateLinks = [];
+    foreach ($nids as $nid) {
+      $node = \Drupal::entityManager()->getStorage('node')->load($nid);
+      $countryCode = $node->get('field_country_code')->getString();
+      $affiliateTitle = $node->get('title')->getString();
+      $affiliateLinks[$countryCode] = [
+        'href' => $node->get('field_url_donate')->getString(),
+        'title' => t('Donate via ' . $affiliateTitle),
+      ];
+    }
+
+    return $affiliateLinks;
   }
 
   /**
@@ -70,10 +100,10 @@ class GeoVariations {
       $countryCode = $affiliate->get('field_affiliate_country_code')->value;
       $link = $affiliate->get('field_affiliate_url')->value;
       $affiliateTitle = $affiliate->get('field_affiliate_title')->value;
-      $affiliateLinks[$countryCode] = array(
-        'url' => $link,
-        'title' => $affiliateTitle,
-      );
+      $affiliateLinks[$countryCode] = [
+        'href' => $link,
+        'content' => $affiliateTitle,
+      ];
     }
 
     return $affiliateLinks;

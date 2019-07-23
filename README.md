@@ -11,7 +11,7 @@ editors can use to add different call to action links for different countries.
 Countries are identified using a two letter country code, e.g. 'US' for the
 United States or 'IT' for Italy.
 
-Javascript is used to query the page response headers in order to retreive the
+Javascript is used to query the page response headers in order to retrieve the
 two letter country code. This means that server side processing in PHP is not
 aware of which country the user is in. In PHP we must create an array of _all_
 the possible geo variations and load them into an array that can be accessed

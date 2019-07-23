@@ -8,6 +8,16 @@ call_to_action:
     - core/jquery.once
     - core/drupal
     - ox_geovariation/geo
+
+donate:
+  version: 1.x
+  js:
+    js/donate.js: {}
+  dependencies:
+    - core/drupalSettings
+    - core/jquery
+    - ox_geovariation/geo
+
 geo:
   version: 1.x
   js:
