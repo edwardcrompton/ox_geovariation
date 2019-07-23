@@ -10,7 +10,7 @@ use Drupal\paragraphs\Entity\Paragraph;
  */
 class GeoVariations {
 
-  const CACHE_ID_NAMESPACE = 'ox_geovariation:'
+  private static $cacheIdNamespace = 'ox_geovariation:';
 
   /**
    * Attaches Call to Action geo variation javascript for a paragraph.
@@ -62,7 +62,7 @@ class GeoVariations {
    */
   public static function loadDonationLinks() {
     // This needs to be run on each page, so look in the cache first.
-    $cid = CACHE_ID_NAMESPACE . 'donation_links'
+    $cid = static::$cacheIdNamespace . 'donation_links';
     if ($cache = \Drupal::cache()->get($cid)) {
       return $cache->data;
     }
