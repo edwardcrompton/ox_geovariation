@@ -10,6 +10,8 @@ use Drupal\paragraphs\Entity\Paragraph;
  */
 class GeoVariations {
 
+  const CACHE_ID_NAMESPACE = 'ox_geovariation:'
+
   /**
    * Attaches Call to Action geo variation javascript for a paragraph.
    *
@@ -59,7 +61,12 @@ class GeoVariations {
    * Gets the donations link for each country code and exposes them to js.
    */
   public static function loadDonationLinks() {
-    // We should cache this as it needs to run on every page.
+    // This needs to be run on each page, so look in the cache first.
+    $cid = CACHE_ID_NAMESPACE . 'donation_links'
+    if ($cache = \Drupal::cache()->get($cid)) {
+      return $cache->data;
+    }
+
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'oxfam_affiliate');
@@ -76,6 +83,9 @@ class GeoVariations {
         'title' => t('Donate via @title', ['@title' => $affiliateTitle]),
       ];
     }
+
+    // Cache for next time.
+    \Drupal::cache()->set($cid, $affiliateLinks);
 
     return $affiliateLinks;
   }

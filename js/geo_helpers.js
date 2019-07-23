@@ -27,9 +27,8 @@ var oxGeovariation = {
    *
    * @param object linkElement
    *  jQuery link object to alter
-   * @param string linkList
-   *  The name of the property in drupalSettings containing the link properties
-   *  keyed by country code.
+   * @param object linkList
+   *  The link properties for each geovariation keyed by country code.
    *
    * @returns boolean
    *  Whether or not the link was altered successfully.
