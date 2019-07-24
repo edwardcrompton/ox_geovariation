@@ -62,7 +62,9 @@ This PHP method is responsible for:
 - Loading a javascript file that will carry out the modifications to the page
 specific to this type of geo variation -see below.
 
-The array must be structured in the following way:
+In order to make use of the existing code for altering links, the array must be
+structured in the following way:
+
 - The array must be keyed by the two letter country code in capitals.
 - Each value is a sub array keyed by the properties of the link to be rewritten,
 e.g:
@@ -76,15 +78,25 @@ e.g:
   etc...
 ```
 
-Additional properties can be added to the array if they are handled in the
-switch statement in the alterLink function in geo_helpers.js.
+Additional properties can be added to the array but they must be handled by the
+javascript (described next) that acts upon them.  This is done in the switch
+statement in the alterLink function in geo_helpers.js.
 
 2. Modifying the page with jQuery
 
 Add a new .js file in the js/ directory which will contain jQuery code to
 actually make the geo variation to the page. call_to_action.js can be used as a
-template for this. The file should be named appropriately. It will be loaded on
-the page using the PHP method above.
+template for this. The file should be named appropriately.
+
+Add a library to ox_geovariation.libraries.yml to include the new js file you
+added. See call_to_action and donate libraries in that file for examples of how
+this is done.
+
+See call_to_action.js or donate.js for an example of the javascript that should
+go in your new file. If the element(s) to be modified are links, the function
+oxGeovariation.alterLink() can be called. This takes two arguments: The element
+object to be modified and the array of properties for each geolocation that was
+added to the drupalSettings in step 1 above.
 
 #### Changes to the theme
 
