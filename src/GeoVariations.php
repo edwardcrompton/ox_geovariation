@@ -51,10 +51,16 @@ class GeoVariations {
    *   The default call to action link.
    */
   public static function defaultCtaLink(Paragraph $paragraph) {
-    $title = $paragraph->get('field_title')->value;
-    $url = Url::fromUri($paragraph->get('field_url')->value);
+    // This is bad. It uses a deprecated function (Drupal::l) and it assumes
+    // that the URI is an external one, which it isn't sometimes.
+    // The underlying issue is that the CTA link field should be a _link_ field
+    // not a pair of text fields.
 
-    return \Drupal::l($title, $url);
+    // $title = $paragraph->get('field_title')->value;
+    // $url = Url::fromUri($paragraph->get('field_url')->value);
+
+    // return \Drupal::l($title, $url);
+    return '';
   }
 
   /**
