@@ -2,7 +2,6 @@
 
 namespace Drupal\ox_geovariation;
 
-use Drupal\Core\Url;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -51,15 +50,10 @@ class GeoVariations {
    *   The default call to action link.
    */
   public static function defaultCtaLink(Paragraph $paragraph) {
-    // This is bad. It uses a deprecated function (Drupal::l) and it assumes
-    // that the URI is an external one, which it isn't sometimes.
+    // @Todo: This was bad. It used a deprecated function (Drupal::l) and it
+    // assumed that the URI is an external one, which it isn't sometimes.
     // The underlying issue is that the CTA link field should be a _link_ field
     // not a pair of text fields.
-
-    // $title = $paragraph->get('field_title')->value;
-    // $url = Url::fromUri($paragraph->get('field_url')->value);
-
-    // return \Drupal::l($title, $url);
     return '';
   }
 
