@@ -105,11 +105,11 @@ class GeoVariations {
     $affiliateLinks = [];
     foreach ($affiliates as $affiliate) {
       $countryCode = $affiliate->get('field_affiliate_country_code')->value;
-      $link = $affiliate->get('field_affiliate_url')->value;
-      $affiliateTitle = $affiliate->get('field_affiliate_title')->value;
+      $link = $affiliate->get('field_affiliate_link')->uri;
+      $linkTitle = $affiliate->get('field_affiliate_link')->title;
       $affiliateLinks[$countryCode] = [
         'href' => $link,
-        'content' => $affiliateTitle,
+        'content' => $linkTitle,
       ];
     }
 
