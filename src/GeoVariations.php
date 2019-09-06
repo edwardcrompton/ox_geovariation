@@ -123,4 +123,16 @@ class GeoVariations {
     return $affiliateLinks;
   }
 
+  /**
+   * Adds js to alter the affiliate link block.
+   *
+   * @param array $variables
+   *   An array of variables from a preprocess function.
+   */
+  public static function alterAffiliateLinkBlock(array &$variables) {
+    if ($variables['elements']['#id'] === 'linktoaffiliate') {
+      $variables['#attached']['library'][] = 'ox_geovariation/affiliate_link_block';
+    }
+  }
+
 }
