@@ -27,7 +27,7 @@
           oxGeovariation.set(countryCode);
         }
         else {
-          console.error(xhr.statusText)
+          console.error(xhr.statusText);
         }
       }
     }

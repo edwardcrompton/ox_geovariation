@@ -20,9 +20,16 @@ class GeoVariations {
   public static function initialiseCtaLinks(array &$variables) {
     $paragraph = $variables['elements']['#paragraph'];
 
+    // Get a paragraph ID so that if there is more than one geolocated paragraph
+    // on the page, we can make sure we use the correct list of affiliate links
+    // for each.
+    $paragraphId = $paragraph->id->value;
+
     $affiliateLinks = static::loadCtaLinks($paragraph);
-    $variables['#attached']['drupalSettings']['affiliateCTALinks'] = $affiliateLinks;
+    $variables['#attached']['drupalSettings']['affiliateCTALinks_' . $paragraphId] = $affiliateLinks;
     $variables['#attached']['library'][] = 'ox_geovariation/call_to_action';
+
+    $variables['attributes']['paragraph-id'] = $paragraphId;
 
     $defaultLink = static::defaultCtaLink($paragraph);
     $variables['default_link'] = $defaultLink;

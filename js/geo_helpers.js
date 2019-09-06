@@ -34,7 +34,8 @@ var oxGeovariation = {
    *  Whether or not the link was altered successfully.
    */
   alterLink: function(linkElement, linkList) {
-    var countryCode = this.get();
+    var countryCode = null
+    countryCode = this.get();
 
     // We can't rely on the country code having already been written to the
     // session at this point, so if it's not there, wait until it is.
@@ -49,14 +50,13 @@ var oxGeovariation = {
       var countryLink = linkList[countryCode];
       for (var property in countryLink) {
         if (countryLink.hasOwnProperty(property)) {
-          switch (property) {
-            case 'title':
-            case 'href':
-              linkElement.attr(property, countryLink[property]);
-              break;
-            case 'content':
-              linkElement.html(countryLink[property]);
-              break;
+          // Content requires special treatment. Any other keys in the array
+          // should just refer to an attribute of the link element.
+          if (property === 'content') {
+            linkElement.html(countryLink[property]);
+          }
+          else {
+            linkElement.attr(property, countryLink[property]);
           }
         }
       }

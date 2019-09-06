@@ -2,7 +2,9 @@
   Drupal.behaviors.call_to_action = {
     attach: function (context, settings) {
       $('.paragraph--type--call-to-action', context).once('geo-variation').each(function () {
-        oxGeovariation.alterLink(this, drupalSettings.affiliateCTALinks);
+        paragraphId = $(this).attr('paragraph-id');
+        linkElement = $('a', this)
+        oxGeovariation.alterLink(linkElement, drupalSettings['affiliateCTALinks_' + paragraphId]);
       });
     }
   }
