@@ -29,7 +29,7 @@ class GeoVariations {
     $variables['#attached']['drupalSettings']['affiliateCTALinks_' . $paragraphId] = $affiliateLinks;
     $variables['#attached']['library'][] = 'ox_geovariation/call_to_action';
 
-    $variables['attributes']['paragraph-id'] = $paragraphId;
+    $variables['attributes']['data-paragraph-id'] = $paragraphId;
 
     $defaultLink = static::defaultCtaLink($paragraph);
     $variables['default_link'] = $defaultLink;

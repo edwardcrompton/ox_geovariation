@@ -40,6 +40,12 @@ the geo location if available. This allows the two letter country code to be
 forced in our local environments. Just put ?testip=xx.xx.xx.xx on the end of the
 URL you are requesting.
 
+Here are some example IPs for different affiliate countries:
+FR: 185.163.29.44
+US: 72.229.28.185
+MX: 187.159.255.255
+IT: 82.102.21.70
+
 Wherever you are on the site, geo.js makes an asynchronous request to the path
 /geo to get the Geo location data. This is then stored in Session Storage in the
 browser. You will need to manually clear session storage by closing the
