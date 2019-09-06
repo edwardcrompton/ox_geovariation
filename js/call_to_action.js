@@ -3,7 +3,8 @@
     attach: function (context, settings) {
       $('.paragraph--type--call-to-action', context).once('geo-variation').each(function () {
         paragraphId = $(this).attr('data-paragraph-id');
-        linkElement = $('a', this)
+        linkElement = $('a', this);
+
         oxGeovariation.alterLink(linkElement, drupalSettings['affiliateCTALinks_' + paragraphId]);
       });
     }

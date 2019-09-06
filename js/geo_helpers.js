@@ -64,5 +64,23 @@ var oxGeovariation = {
       return linkElement;
     }
     return false;
+  },
+
+  isAlterable: function(linkElement, linkList) {
+    var countryCode = null
+    countryCode = this.get();
+
+    // We can't rely on the country code having already been written to the
+    // session at this point, so if it's not there, wait until it is.
+    if (countryCode === null) {
+      setTimeout(function() {
+        oxGeovariation.alterLink(linkElement, linkList);
+      }, 500);
+      return false;
+    }
+
+    if (linkList[countryCode] && linkElement) {
+      return true;
+    }
   }
 };
