@@ -15,7 +15,7 @@
         var alterable = oxGeovariation.isAlterable(linkElement, drupalSettings['affiliateCTALinks_' + paragraphId]);
         if (alterable) {
           $(this).addClass('geovariation');
-        };
+        }
       });
     }
   }

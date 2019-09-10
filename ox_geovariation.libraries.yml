@@ -32,3 +32,10 @@ affiliate_link_block:
     js/affiliate_link_block.js: {}
   dependencies:
     - ox_geovariation/call_to_action
+
+affiliate_toggle_blocks:
+  version: 1.x
+  js:
+    js/affiliate_toggle_blocks.js: {}
+  dependencies:
+    - ox_subscribe/call_to_action
