@@ -79,10 +79,10 @@ class GeoVariations {
   /**
    * Load all the affiliate links ready to use.
    *
-   * @param string $langcode
-   *   The langcode we want to filter these affiliates by.
    * @param string $field_name
    *   The field we would like to get the url from.
+   * @param string $langcode
+   *   The langcode we want to filter these affiliates by.
    *
    * @return array
    *   An array of link arrays for each affiliate
