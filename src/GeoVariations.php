@@ -56,6 +56,7 @@ class GeoVariations {
   public static function initialiseSignupLinks(array &$variables) {
     $affiliate_urls = static::loadSignupLinks();
     $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
+    $form['#attached']['library'][] = 'ox_geovariation/affiliate_toggle_blocks';
   }
 
   /**
@@ -80,6 +81,8 @@ class GeoVariations {
    *
    * @param string $langcode
    *   The langcode we want to filter these affiliates by.
+   * @param string $field_name
+   *   The field we would like to get the url from.
    *
    * @return array
    *   An array of link arrays for each affiliate
@@ -87,7 +90,7 @@ class GeoVariations {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public static function loadLinks($langcode = NULL) {
+  public static function loadLinks($langcode = NULL, $field_name = 'field_url_donate') {
     // This needs to be run on each page, so look in the cache first.
     $cid = static::$cacheIdNamespace . 'donation_links';
     if ($cache = \Drupal::cache()->get($cid)) {
@@ -112,7 +115,7 @@ class GeoVariations {
       $countryCode = $node->get('field_country_code')->getString();
       $affiliateTitle = $node->get('title')->getString();
       $affiliateLinks[$countryCode] = [
-        'href' => $node->get('field_url_donate')->getString(),
+        'href' => $node->get($field_name)->getString(),
         'title' => t('Donate via @title', ['@title' => $affiliateTitle]),
       ];
     }
@@ -143,7 +146,7 @@ class GeoVariations {
       // so we can fill it up with affiliate_urls.
       $affiliate_urls[$langcode] = [];
       // Loop through all Offices.
-      $affiliate_urls[$langcode] = static::loadLinks($langcode);
+      $affiliate_urls[$langcode] = static::loadLinks($langcode, 'field_url_signup');
     }
 
     return $affiliate_urls;
