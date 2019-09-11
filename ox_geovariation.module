@@ -51,3 +51,10 @@ function ox_geovariation_preprocess_menu__main(&$variables) {
 function ox_geovariation_page_attachments(array &$page) {
   $page['#attached']['library'][] = 'ox_geovariation/geo';
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function ox_geovariation_form_alter(&$variables) {
+  GeoVariations::initialiseSignupLinks($variables);
+}

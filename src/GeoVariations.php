@@ -48,6 +48,17 @@ class GeoVariations {
   }
 
   /**
+   * Attaches the Donation link geo variation javascript for menu links.
+   *
+   * @param array $variables
+   *   An array of variables from a preprocess function.
+   */
+  public static function initialiseSignupLinks(array &$variables) {
+    $affiliate_urls = static::loadSignupLinks();
+    $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
+  }
+
+  /**
    * Creates a link using the default Call to Action fields.
    *
    * @param \Drupal\paragraphs\Entity\Paragraph $paragraph
@@ -65,9 +76,18 @@ class GeoVariations {
   }
 
   /**
-   * Gets the donations link for each country code and exposes them to js.
+   * Load all the affiliate links ready to use.
+   *
+   * @param string $langcode
+   *   The langcode we want to filter these affiliates by.
+   *
+   * @return array
+   *   An array of link arrays for each affiliate
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public static function loadDonationLinks() {
+  public static function loadLinks($langcode = NULL) {
     // This needs to be run on each page, so look in the cache first.
     $cid = static::$cacheIdNamespace . 'donation_links';
     if ($cache = \Drupal::cache()->get($cid)) {
@@ -77,6 +97,12 @@ class GeoVariations {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'oxfam_affiliate');
+
+    // If we have passed in a langcode, then we want to
+    // filter the affiliates using it.
+    if ($langcode) {
+      $query->condition('langcode', $langcode, '=');
+    }
 
     $nids = $query->execute();
 
@@ -94,6 +120,40 @@ class GeoVariations {
     // Cache for next time.
     \Drupal::cache()->set($cid, $affiliateLinks);
 
+    return $affiliateLinks;
+  }
+
+  /**
+   * Gets the Signup links for each country, grouped by langcode.
+   *
+   * @return array
+   *   An array of languages the site supports, each containing the
+   *   affiliates for that language
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public static function loadSignupLinks() {
+    // Get all default languages for the site.
+    $languages = _get_languages('default');
+    $affiliate_urls = [];
+    // Loop through all languages enabled for affiliate urls.
+    foreach ($languages as $langcode => $language) {
+      // Create a placeholder array for this language
+      // so we can fill it up with affiliate_urls.
+      $affiliate_urls[$langcode] = [];
+      // Loop through all Offices.
+      $affiliate_urls[$langcode] = static::loadLinks($langcode);
+    }
+
+    return $affiliate_urls;
+  }
+
+  /**
+   * Gets the donations link for each country code and exposes them to js.
+   */
+  public static function loadDonationLinks() {
+    $affiliateLinks = static::loadLinks();
     return $affiliateLinks;
   }
 
