@@ -56,7 +56,7 @@ class GeoVariations {
   public static function initialiseSignupLinks(array &$variables) {
     $affiliate_urls = static::loadSignupLinks();
     $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
-    $form['#attached']['library'][] = 'ox_geovariation/affiliate_toggle_blocks';
+    $variables['#attached']['library'][] = 'ox_geovariation/affiliate_toggle_blocks';
   }
 
   /**
@@ -90,7 +90,7 @@ class GeoVariations {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public static function loadLinks($langcode = NULL, $field_name = 'field_url_donate') {
+  public static function loadLinks($field_name = 'field_url_donate', $langcode = NULL) {
     // This needs to be run on each page, so look in the cache first.
     $cid = static::$cacheIdNamespace . 'donation_links';
     if ($cache = \Drupal::cache()->get($cid)) {
@@ -146,7 +146,7 @@ class GeoVariations {
       // so we can fill it up with affiliate_urls.
       $affiliate_urls[$langcode] = [];
       // Loop through all Offices.
-      $affiliate_urls[$langcode] = static::loadLinks($langcode, 'field_url_signup');
+      $affiliate_urls[$langcode] = static::loadLinks('field_url_signup', $langcode);
     }
 
     return $affiliate_urls;
