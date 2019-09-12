@@ -39,3 +39,8 @@ affiliate_toggle_blocks:
     js/affiliate_toggle_blocks.js: {}
   dependencies:
     - ox_subscribe/call_to_action
+
+modal_redirect:
+  version: 1.x
+  js:
+    js/modal_redirect.js: {}

@@ -31,6 +31,11 @@ class OxModalRedirect extends BlockBase {
       '#text2' => 'text2',
       '#text3' => 'text3',
       '#front_class' => 'front',
+      '#attached' => [
+        'library' => [
+          'ox_geovariation/modal_redirect',
+        ],
+      ],
     ];
 
   }
