@@ -27,9 +27,9 @@ class OxModalRedirect extends BlockBase {
       '#theme' => 'ox_modal_redirect',
       '#title' => 'Oxfam International',
       '#lang' => 'en',
-      '#text1' => 'text1',
-      '#text2' => 'text2',
-      '#text3' => 'text3',
+      '#text1' => 'title text',
+      '#text2' => 'Redirect me',
+      '#text3' => 'body text',
       '#front_class' => 'front',
       '#attached' => [
         'library' => [
