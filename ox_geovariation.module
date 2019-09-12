@@ -58,3 +58,21 @@ function ox_geovariation_page_attachments(array &$page) {
 function ox_geovariation_form_alter(&$variables) {
   GeoVariations::initialiseSignupLinks($variables);
 }
+
+/**
+ * Implements hook_theme().
+ */
+function ox_geovariation_theme($existing, $type, $theme, $path) {
+  return [
+    'ox_modal_redirect' => [
+      'variables' => [
+        'title' => NULL,
+        'lang' => NULL,
+        'text1' => NULL,
+        'text2' => NULL,
+        'text3' => NULL,
+        'front_class' => NULL,
+      ],
+    ],
+  ];
+}
