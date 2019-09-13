@@ -1,5 +1,40 @@
 (function ($, Drupal) {
 
+  var countrySettings = {
+    us: {
+      country: 'us',
+      url: 'http://www.oxfamamerica.org?utm_medium=referral&utm_source=oxfam.org&utm_campaign=oi-lightbox',
+      title: 'Looks like you\'re in the USA',
+      description: 'Please confirm your location so we can give you the best experience.',
+      positive_text: 'United States',
+      negative_text: 'Outside the US',
+    },
+    fr: {
+      country: 'fr',
+      url: 'https://www.oxfamfrance.org?utm_medium=referral&utm_source=oxfam.org&utm_campaign=oi-lightbox',
+      title: 'Vous vous connectez depuis la france ?',
+      description: 'Pour améliorer votre visite, choisissez une des options suivantes :',
+      positive_text: 'Je voudrais aller sur le site<br>d’<strong>Oxfam France</strong>',
+      negative_text: 'Je voudrais rester sur le site<br> d\'<strong>Oxfam International',
+    },
+    es: {
+      country: 'es',
+      url: 'http://trackings.oxfamintermon.org/click.php?campanya=POPU-OXFAM&id_bp=ANONIMO&data_enviament=20161207&id_tracking=1612-PopUpOxfam&desti=http://www.oxfamintermon.org',
+      title: '¿nos visitas desde españa?',
+      description: 'Para mejorar tu visita escoge una de las siguientes opciones:',
+      positive_text: 'Quiero ir a<br><strong>Oxfam Intermón<br>(España)</strong>',
+      negative_text: 'Quiero quedarme en<br><strong>Oxfam<br>Internacional</strong>',
+    },
+    mx: {
+      country: 'mx',
+      url: 'https://www.oxfammexico.org/?utm_source=popupinternational',
+      title: '¿Nos visitas desde México?',
+      description: 'Para mejorar tu visita elige una de las siguientes opciones:',
+      positive_text: 'Quiero quedarme en<br>Oxfam Internacional',
+      negative_text: 'Quiero ir a<br>Oxfam México',
+    },
+  };
+
   // Note: This was largely copied from the D7 site during migration
   // Some tidying up was done, but could do with some more (such as move the
   // urls to an editable area, and js settings)
@@ -17,21 +52,19 @@
 
         // Only redirect for certain countrycodes
         if (countriesToRedirect.includes(countrycode)) {
-
           // Open the appropriate modal
           if (countrycode === 'US' && lang === 'en') {
-            trigger_redirect_dialog('us', 'http://www.oxfamamerica.org?utm_medium=referral&utm_source=oxfam.org&utm_campaign=oi-lightbox');
+            trigger_redirect_dialog('us');
           }
           else if (countrycode === 'FR' && lang === 'fr') {
-            trigger_redirect_dialog('fr', 'https://www.oxfamfrance.org?utm_medium=referral&utm_source=oxfam.org&utm_campaign=oi-lightbox');
+            trigger_redirect_dialog('fr');
           }
           else if (countrycode === 'ES' && lang === 'es') {
-            trigger_redirect_dialog('es', 'http://trackings.oxfamintermon.org/click.php?campanya=POPU-OXFAM&id_bp=ANONIMO&data_enviament=20161207&id_tracking=1612-PopUpOxfam&desti=http://www.oxfamintermon.org');
+            trigger_redirect_dialog('es');
           }
           else if (countrycode === 'MX' && lang === 'es') {
-            trigger_redirect_dialog('mx', 'https://www.oxfammexico.org/?utm_source=popupinternational');
+            trigger_redirect_dialog('mx');
           }
-
         }
 
       });
@@ -39,7 +72,8 @@
     }
   }
 
-  function trigger_redirect_dialog(country, url) {
+  function trigger_redirect_dialog(country) {
+    countryData = countrySettings[country];
     // Get the redirect cookie if it exists.
     var redirect_cookie = get_cookie_value('oi_1234567_new_country_detect');
 
@@ -47,25 +81,40 @@
     // a redirect. The value 'no' indicates the user does NOT want to stay on
     // the international site.
     if (redirect_cookie == 'no') {
-      window.location.href = url;
+      window.location.href = countryData.url;
     }
 
     // Check if the redirect cookie has not been set.
     if (redirect_cookie === false) {
-      $( "#modal-redirect" ).dialog();
+      modalRedirect = $( "#modal-redirect" );
+      // Update text in the dialog
+      modalRedirect.addClass('modal-redirect--' + country);
+      modalRedirect.find('.modal-redirect__title').text(countryData.title);
+      modalRedirect.find('.modal-redirect__description').text(countryData.description);
+      modalRedirect.find('.modal-redirect__link--positive').html(countryData.positive_text);
+      modalRedirect.find('.modal-redirect__link--negative').html(countryData.negative_text);
 
-      // User closes the dialog.
-      $("#modal-redirect").on('dialogclose', function(event) {
-        // Set the cookie so next time we don't invoke this dialog
-        $.cookie("oi_1234567_new_country_detect", "yes", {expires: 720, path: '/'});
+      // Load up the modal dialog
+      theDialog = modalRedirect.dialog(modalRedirect,{
+        width: '90%',
+        dialogClass: 'modal-redirect-dialog',
       });
+      modalRedirect.show({title: 'Subscribe To Newsletter'});
 
       // Bind the click event to the positive link.
-      $('#oi-front-redirect-link-yes').on('click', function(event) {
+      $('.modal-redirect__link--positive').on('click', function(event) {
         event.preventDefault();
         // Set the cookie and redirect to the correct site.
         $.cookie("oi_1234567_new_country_detect", "no", {expires: 720, path: '/'});
-        window.location.href = url;
+        window.location.href = countryData.url;
+      });
+
+      // Bind the click event to the negative link.
+      $('.modal-redirect__link--negative').on('click', function(event) {
+        event.preventDefault();
+        // Set the cookie so next time we don't invoke this dialog
+        $.cookie("oi_1234567_new_country_detect", "yes", {expires: 720, path: '/'});
+        theDialog.dialog("close");
       });
     }
   }
