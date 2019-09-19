@@ -34,6 +34,8 @@ class OxModalRedirect extends BlockBase {
       '#attached' => [
         'library' => [
           'ox_geovariation/modal_redirect',
+          'core/jquery.cookie',
+          'core/drupal.dialog',
         ],
       ],
     ];
