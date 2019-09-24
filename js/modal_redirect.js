@@ -98,6 +98,7 @@
       theDialog = modalRedirect.dialog(modalRedirect,{
         width: '90%',
         dialogClass: 'modal-redirect-dialog',
+        modal: true,
       });
       modalRedirect.show({title: 'Subscribe To Newsletter'});
 
