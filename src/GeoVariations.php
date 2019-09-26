@@ -57,6 +57,9 @@ class GeoVariations {
     $affiliate_urls = static::loadSignupLinks();
     $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
     $variables['#attached']['library'][] = 'ox_geovariation/affiliate_toggle_blocks';
+    if ($variables['#form_id'] === 'subscriber_form') {
+      $variables['#attached']['library'][] = 'ox_geovariation/force_affiliate_redirect';
+    }
   }
 
   /**

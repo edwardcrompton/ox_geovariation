@@ -44,3 +44,8 @@ modal_redirect:
   version: 1.x
   js:
     js/modal_redirect.js: {}
+
+force_affiliate_redirect:
+  version: 1.x
+  js:
+    js/force_affiliate_redirect.js: {}
