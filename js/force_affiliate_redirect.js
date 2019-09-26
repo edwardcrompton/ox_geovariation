@@ -1,6 +1,6 @@
 (function ($, Drupal) {
 
-  var affiliateCTALinks = drupalSettings.ox_geovariation.affiliates;
+  var affiliates = drupalSettings.ox_geovariation.affiliates;
   var languageOfPage = drupalSettings.path.currentLanguage;
   var countryCode = oxGeovariation.get();
 
@@ -9,8 +9,8 @@
 
       // If the logged in user has a geo countryCode
       // AND the current page language has a list of affiliates
-      if (typeof countryCode !== 'undefined' && languageOfPage in affiliateCTALinks) {
-        var affiliatesForLanguage = affiliateCTALinks[languageOfPage];
+      if (typeof countryCode !== 'undefined' && languageOfPage in affiliates) {
+        var affiliatesForLanguage = affiliates[languageOfPage];
 
         // If there is an affiliate for this specific countrycode/language
         if (countryCode in affiliatesForLanguage) {

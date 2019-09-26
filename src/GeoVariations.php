@@ -54,11 +54,19 @@ class GeoVariations {
    *   An array of variables from a preprocess function.
    */
   public static function initialiseSignupLinks(array &$variables) {
-    $affiliate_urls = static::loadSignupLinks();
-    $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
-    $variables['#attached']['library'][] = 'ox_geovariation/affiliate_toggle_blocks';
-    if ($variables['#form_id'] === 'subscriber_form') {
-      $variables['#attached']['library'][] = 'ox_geovariation/force_affiliate_redirect';
+    switch ($variables['#form_id']) {
+      case 'subscriber_form':
+        $affiliate_urls = static::loadSignupLinks();
+        $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
+        $variables['#attached']['library'][] = 'ox_geovariation/force_affiliate_redirect';
+        break;
+
+      case 'subscribe_mini_form':
+        $affiliate_urls = static::loadSignupLinks();
+        $variables['#attached']['drupalSettings']['ox_geovariation']['affiliates'] = $affiliate_urls;
+        $variables['#attached']['library'][] = 'ox_geovariation/affiliate_toggle_blocks';
+        break;
+
     }
   }
 
