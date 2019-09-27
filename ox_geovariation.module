@@ -74,5 +74,11 @@ function ox_geovariation_theme($existing, $type, $theme, $path) {
         'front_class' => NULL,
       ],
     ],
+    'ox_near_you' => [
+      'variables' => [
+        'nearyoutitle' => NULL,
+        'affiliates' => [],
+      ],
+    ],
   ];
 }

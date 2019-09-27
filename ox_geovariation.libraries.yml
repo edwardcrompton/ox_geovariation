@@ -45,6 +45,11 @@ modal_redirect:
   js:
     js/modal_redirect.js: {}
 
+near_you:
+  version: 1.x
+  js:
+    js/ox_near_you.js: {}
+
 force_affiliate_redirect:
   version: 1.x
   js:
