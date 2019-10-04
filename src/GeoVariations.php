@@ -103,7 +103,7 @@ class GeoVariations {
    */
   public static function loadLinks($field_name = 'field_url_donate', $langcode = NULL) {
     // This needs to be run on each page, so look in the cache first.
-    $cid = static::$cacheIdNamespace . 'donation_links';
+    $cid = static::$cacheIdNamespace . 'donation_links' . $field_name . $langcode;
     if ($cache = \Drupal::cache()->get($cid)) {
       return $cache->data;
     }
