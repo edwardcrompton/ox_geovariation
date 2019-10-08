@@ -27,6 +27,11 @@ class OxNearYou extends BlockBase {
 
     $affiliates = GeoVariations::loadAffiliates();
 
+    // Order the items in the affiliates array by title.
+    usort($affiliates, function ($a, $b) {
+      return $a['title'] <=> $b['title'];
+    });
+
     return [
       '#theme' => 'ox_near_you',
       '#nearyoutitle' => 'Oxfam near you',

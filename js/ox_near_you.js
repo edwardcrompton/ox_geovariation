@@ -5,7 +5,7 @@
 
       $('#block-oxfamnearyou').once('oxfamnearyou').each(function() {
         // Get the users country code, and show that country
-        var usersCountryCode = 'MX';
+        var usersCountryCode = oxGeovariation.get();
         switchAffiliate(usersCountryCode);
 
         // Create a list of all the available affiliates
@@ -34,6 +34,10 @@
   }
 
   function switchAffiliate(affiliateCode) {
+    // Check whether affiliate is a valid one (if not, default to 'OI')
+    if ($('*[data-affiliate-country-code=' + affiliateCode + ']').length == 0) {
+      affiliateCode = 'OI';
+    }
     // Hide all the affiliates
     $('.affiliate').hide();
     $('*[data-affiliate-country-code=' + affiliateCode + ']').show();
