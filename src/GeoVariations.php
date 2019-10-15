@@ -181,7 +181,7 @@ class GeoVariations {
           $addresses[$address_id]['phone'] = $address_entity->get('field_phone')->getString();
           $addresses[$address_id]['fax'] = $address_entity->get('field_fax')->getString();
           $addresses[$address_id]['email'] = $address_entity->get('field_email')->getString();
-          $addresses[$address_id]['address'] = $address_entity->get('field_address')->getString();
+          $addresses[$address_id]['address'] = $address_entity->field_address->view();
         }
         $affiliate['addresses'] = $addresses;
 
