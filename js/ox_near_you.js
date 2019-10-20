@@ -17,7 +17,7 @@
         })
 
         // Add a select list with the affiliates as options
-        selectElement = '<label for="affiliate-selector" class="inline-block pr-6">Choose an Oxfam affiliate</label><select id="affiliate-selector">';
+        selectElement = '<label for="affiliate-selector" class="inline-block pr-6">' + Drupal.t('Choose an Oxfam affiliate') + '</label><select id="affiliate-selector">';
         for (affiliateCode in affiliateList) {
           selectElement = selectElement + '<option value="' + affiliateCode + '">' + affiliateList[affiliateCode] + '</option>';
         }
