@@ -34,7 +34,7 @@ class OxNearYou extends BlockBase {
 
     return [
       '#theme' => 'ox_near_you',
-      '#nearyoutitle' => 'Oxfam near you',
+      '#nearyoutitle' => $this->t('Oxfam near you'),
       '#affiliates' => $affiliates,
       '#attached' => [
         'library' => [
