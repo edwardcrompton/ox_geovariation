@@ -24,7 +24,7 @@ class OxNearYou extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-
+    $config = $this->getConfiguration();
     $affiliates = GeoVariations::loadAffiliates();
 
     // Order the items in the affiliates array by title.
@@ -34,7 +34,7 @@ class OxNearYou extends BlockBase {
 
     return [
       '#theme' => 'ox_near_you',
-      '#nearyoutitle' => 'Oxfam near you',
+      '#nearyoutitle' => $config['label'],
       '#affiliates' => $affiliates,
       '#attached' => [
         'library' => [
