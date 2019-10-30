@@ -7,7 +7,7 @@
  */
 (function () {
   var countryCode = oxGeovariation.get();
-  var headerName = 'X-Country-Code';
+  var headerName = 'Country-Code';
 
   if (!countryCode) {
     var url = '/geo';
