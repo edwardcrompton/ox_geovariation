@@ -10,12 +10,9 @@
       $('#block-linktoaffiliate', context).once('geo-variation-linktoaffiliate').each(function() {
         // Get the paragraph id of the CTA link in the block.
         var paragraphId = $('.paragraph--type--call-to-action', this).attr('data-paragraph-id');
-        // See if there's a geovariation on the CTA link that matches the current
-        // country code.
-        var alterable = oxGeovariation.isAlterable(linkElement, drupalSettings['affiliateCTALinks_' + paragraphId]);
-        if (alterable) {
-          $(this).addClass('geovariation');
-        }
+        // Set a class on the element if it has already been changed for
+        // geolocation.
+        oxGeovariation.addGeoClass($(this), drupalSettings['affiliateCTALinks_' + paragraphId]);
       });
     }
   }

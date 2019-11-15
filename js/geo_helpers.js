@@ -7,6 +7,7 @@
 var oxGeovariation = {
   storage: sessionStorage,
   itemName: 'Drupal.country-code',
+  tryLimit: 10,
 
   get: function() {
     return this.storage.getItem(this.itemName);
@@ -33,19 +34,18 @@ var oxGeovariation = {
    * @returns boolean
    *  Whether or not the link was altered successfully.
    */
-  alterLink: function(linkElement, linkList) {
+  alterLink: function(linkElement, linkList, tries = 0) {
     var countryCode = null
     countryCode = this.get();
 
     // We can't rely on the country code having already been written to the
     // session at this point, so if it's not there, wait until it is.
-    if (countryCode === null) {
+    if (countryCode === null && tries < this.tryLimit) {
       setTimeout(function() {
-        oxGeovariation.alterLink(linkElement, linkList);
+        oxGeovariation.alterLink(linkElement, linkList, tries + 1);
       }, 500);
       return false;
     }
-
     if (linkList[countryCode] && linkElement) {
       var countryLink = linkList[countryCode];
       for (var property in countryLink) {
@@ -66,21 +66,24 @@ var oxGeovariation = {
     return false;
   },
 
-  isAlterable: function(linkElement, linkList) {
+  addGeoClass: function(linkElement, linkList, tries = 0) {
     var countryCode = null
     countryCode = this.get();
 
     // We can't rely on the country code having already been written to the
     // session at this point, so if it's not there, wait until it is.
-    if (countryCode === null) {
-      setTimeout(function() {
-        oxGeovariation.alterLink(linkElement, linkList);
-      }, 500);
-      return false;
+    if (countryCode === null && tries < this.tryLimit) {
+      setTimeout(function () {
+        oxGeovariation.addGeoClass(linkElement, linkList, tries + 1);
+      }, 5);
+      return;
     }
 
     if (linkList[countryCode] && linkElement) {
-      return true;
+      linkElement.addClass('geovariation');
+    }
+    else {
+      console.log('Could not get country code for geovariation.')
     }
   }
 };
