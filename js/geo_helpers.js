@@ -66,7 +66,7 @@ var oxGeovariation = {
     return false;
   },
 
-  addGeoClass: function(linkElement, linkList, tries = 0) {
+  addGeoClass: function(element, linkList, tries = 0) {
     var countryCode = null
     countryCode = this.get();
 
@@ -74,13 +74,13 @@ var oxGeovariation = {
     // session at this point, so if it's not there, wait until it is.
     if (countryCode === null && tries < this.tryLimit) {
       setTimeout(function () {
-        oxGeovariation.addGeoClass(linkElement, linkList, tries + 1);
+        oxGeovariation.addGeoClass(element, linkList, tries + 1);
       }, 5);
       return;
     }
 
-    if (linkList[countryCode] && linkElement) {
-      linkElement.addClass('geovariation');
+    if (linkList[countryCode] && element) {
+      element.addClass('geovariation');
     }
     else {
       console.log('Could not get country code for geovariation.')
