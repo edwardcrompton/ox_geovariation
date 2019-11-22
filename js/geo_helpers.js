@@ -7,7 +7,8 @@
 var oxGeovariation = {
   storage: sessionStorage,
   itemName: 'Drupal.country-code',
-  tryLimit: 10,
+  tryLimit: 100,
+  tryInterval: 50,
 
   get: function() {
     return this.storage.getItem(this.itemName);
@@ -43,7 +44,7 @@ var oxGeovariation = {
     if (countryCode === null && tries < this.tryLimit) {
       setTimeout(function() {
         oxGeovariation.alterLink(linkElement, linkList, tries + 1);
-      }, 500);
+      }, this.tryInterval);
       return false;
     }
     if (linkList[countryCode] && linkElement) {
@@ -75,7 +76,7 @@ var oxGeovariation = {
     if (countryCode === null && tries < this.tryLimit) {
       setTimeout(function () {
         oxGeovariation.addGeoClass(element, linkList, tries + 1);
-      }, 5);
+      }, this.tryInterval);
       return;
     }
 
@@ -83,7 +84,8 @@ var oxGeovariation = {
       element.addClass('geovariation');
     }
     else {
-      console.log('Could not get country code for geovariation.')
+      console.log('Could not get country code for geovariation after '+tries+' tries at '+this.tryInterval+'ms intervals.')
     }
+    console.log(tries);
   }
 };
