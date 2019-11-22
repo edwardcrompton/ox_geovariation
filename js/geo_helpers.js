@@ -86,6 +86,5 @@ var oxGeovariation = {
     else {
       console.log('Could not get country code for geovariation after '+tries+' tries at '+this.tryInterval+'ms intervals.')
     }
-    console.log(tries);
   }
 };
