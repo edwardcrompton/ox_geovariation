@@ -86,5 +86,50 @@ var oxGeovariation = {
     else {
       console.log('Could not get country code for geovariation after '+tries+' tries at '+this.tryInterval+'ms intervals.')
     }
+  },
+
+  /**
+   * Triggers a modal dialog for specific country and language combinations.
+   *
+   * @param object callback
+   *   A callback function to run for specific country code / language combos
+   * @param int tries
+   *   The number of attempts so far to fetch the country code of the visitor.
+   */
+  triggerModal: function (callback, tries = 0) {
+    var countriesToRedirect = ['ES', 'MX', 'US', 'FR'];
+    var lang = drupalSettings.path.currentLanguage;
+    var countryCode = null;
+    countryCode = this.get();
+
+    // We can't rely on the country code having already been written to the
+    // session at this point, so if it's not there, wait until it is.
+    if (countryCode === null && tries < this.tryLimit) {
+      setTimeout(function () {
+        oxGeovariation.triggerModal(callback, tries + 1);
+      }, this.tryInterval);
+      return;
+    }
+
+    // Only redirect for certain countrycodes
+    if (countriesToRedirect.includes(countryCode)) {
+      // Open the appropriate modal
+      if (countryCode === 'US' && lang === 'en') {
+        callback('us');
+      }
+      else if (countryCode === 'FR' && lang === 'fr') {
+        callback('fr');
+      }
+      else if (countryCode === 'ES' && lang === 'es') {
+        callback('es');
+      }
+      else if (countryCode === 'MX' && lang === 'es') {
+        callback('mx');
+      }
+    }
+
+    if (countryCode === null) {
+      console.log('Could not get country code for geovariation after '+tries+' tries at '+this.tryInterval+'ms intervals.')
+    }
   }
 };
