@@ -118,5 +118,3 @@
     }
   }
 })(jQuery, Drupal);
-
-
