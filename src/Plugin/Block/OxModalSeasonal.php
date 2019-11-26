@@ -31,4 +31,5 @@ class OxModalSeasonal extends BlockBase {
       ],
     ];
   }
+
 }
