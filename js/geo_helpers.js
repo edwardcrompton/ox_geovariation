@@ -131,5 +131,53 @@ var oxGeovariation = {
     if (countryCode === null) {
       console.log('Could not get country code for geovariation after '+tries+' tries at '+this.tryInterval+'ms intervals.')
     }
+  },
+
+  /**
+   * Trigger function to invoke a callback when the country code is retrieved.
+   *
+   * @todo: With the correct callback functions, I think this trigger method can
+   * replace triggerModal, addGeoClass and alterLink above.
+   */
+  trigger: function (callback, tries = 0) {
+    var countryCode = null;
+    countryCode = this.get();
+
+    // We can't rely on the country code having already been written to the
+    // session at this point, so if it's not there, wait until it is.
+    if (countryCode === null && tries < this.tryLimit) {
+      setTimeout(function () {
+        oxGeovariation.trigger(callback, tries + 1);
+      }, this.tryInterval);
+      return;
+    }
+
+    if (countryCode === null) {
+      console.log('Could not get country code for geovariation after '+tries+' tries at '+this.tryInterval+'ms intervals.')
+    }
+    else {
+      callback(countryCode);
+    }
+  },
+
+  /**
+   * Returns the cookie value if found otherwise false.
+   *
+   * @param cookie_name
+   *   The cookie to search for.
+   *
+   * @return bool|{*}
+   *   Returns false if not found or the cookie object.
+   */
+  getCookieValue: function(cookie_name) {
+    if (jQuery.cookie(cookie_name) === null || jQuery.cookie(cookie_name) === ""
+        || jQuery.cookie(cookie_name) === "null" || jQuery.cookie(cookie_name) === undefined) {
+      //no cookie
+      return false;
+    }
+    else {
+      // we have cookie, so return cookie value
+      return jQuery.cookie(cookie_name);
+    }
   }
 };

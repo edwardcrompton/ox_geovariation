@@ -36,6 +36,7 @@ function ox_geovariation_preprocess_paragraph__call_to_action(&$variables) {
  */
 function ox_geovariation_preprocess_block(&$variables) {
   GeoVariations::alterAffiliateLinkBlock($variables);
+  GeoVariations::alterModalSeasonal($variables);
 }
 
 /**

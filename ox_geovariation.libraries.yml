@@ -45,6 +45,11 @@ modal_redirect:
   js:
     js/modal_redirect.js: {}
 
+modal_seasonal:
+  version: 1.x
+  js:
+    js/modal_seasonal.js: {}
+
 near_you:
   version: 1.x
   js:
