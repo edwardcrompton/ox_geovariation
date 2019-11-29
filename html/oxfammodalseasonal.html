@@ -2,14 +2,6 @@
 Copy this into a custom block called oxfammodalseasonal
 -->
 <style type="text/css" media="screen">
-@font-face {
-    font-family: 'OxfamHeadline';
-    src: url("https://ousweb-dev-jess-static.s3.amazonaws.com/static/fonts/oxfamglobalheadline-webfont.svg#OxfamHeadline") format("svg");
-    src: url("https://ousweb-dev-jess-static.s3.amazonaws.com/static/fonts/oxfamglobalheadline-webfont.eot");
-    src: url("https://ousweb-dev-jess-static.s3.amazonaws.com/static/fonts/oxfamglobalheadline-webfont.eot?#iefix") format("embedded-opentype"),url("../fonts/oxfamglobalheadline-webfont.woff") format("woff"),url("https://ousweb-dev-jess-static.s3.amazonaws.com/static/fonts/oxfamglobalheadline-webfont.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal
-}
 
 @font-face {
     font-family: 'Arial', 'Helvetica', sans-serif;
@@ -26,7 +18,7 @@ img {
     margin: 0 auto
 }
 .reveal-overlay {
-    font: 62.5% / 1.6 Arial, sans-serif;
+    /*font: 62.5% / 1.6 Arial, sans-serif;*/
     position: fixed;
     top: 0;
     right: 0;
@@ -281,19 +273,18 @@ img {
 
 .oa_eoy.reveal h1{
     color: #fff;
-    font-size: 5.0rem;
-    line-height: 5.0rem;
+    font-size: 3em;
+    line-height: 100%;
     margin-bottom: 20px;
     margin-top: 50px;
     padding-top: 20px;
     text-align: center;
-    font-family: OxfamHeadline,Arial,sans-serif;
 }
 
 @media screen and (min-width: 1024px) {
     .oa_eoy.reveal h1{
-        font-size:3.8rem;
-        line-height: 3.8rem;
+        font-size:3em;
+        line-height: 100%;
         margin-bottom: 10px;
         margin-top: 50px;
         text-align: center;
@@ -302,8 +293,8 @@ img {
 
 @media screen and (orientation: portrait) {
     .oa_eoy.reveal h1{
-        font-size:3.8rem;
-        line-height: 3.8rem;
+        font-size:3.8em;
+        line-height: 100%;
         margin-top: 0;
         text-align: center;
         padding: 20px 20px 0 20px
@@ -312,13 +303,12 @@ img {
 
 @media screen and (orientation: portrait) and (min-width: 40em) {
     .oa_eoy.reveal h1{
-        font-size:3.5rem;
-        line-height: 3.5rem
+        font-size:3.5em;
+        line-height: 100%
     }
 }
 
 .oa_eoy.reveal h2{
-    font-family: OxfamHeadline;
     font-size: 4rem;
     line-height: 3.75rem;
     text-align: left;
@@ -329,9 +319,10 @@ img {
     text-align: center;
     color: #fff;
     margin: 0 auto;
-    font-size: 1.6rem;
-    line-height: 2.2rem;
-    font-weight: normal
+    font-size: 1.125em;
+    line-height: 150%;
+    font-weight: normal;
+    padding: 1em 0;
 }
 
 @media screen and (orientation: landscape) {
@@ -341,10 +332,14 @@ img {
 }
 
 .oa_eoy.reveal p.opt-out {
-    font-size: 1.6rem;
-    line-height: 2.2rem;
+    font-size: 1.125em;
+    line-height: 150%;
     text-decoration: underline;
     text-align: center
+}
+
+.oa_eoy.reveal p.opt-out a {
+    color: #fff;
 }
 
 @media screen and (max-width: 47.99875em) {
@@ -408,7 +403,7 @@ img {
 
 .oa_eoy.reveal .oxfam-lightbox .oxfam-button__box {
     margin: 0;
-    font-size: 2.4rem;
+    font-size: 1.75em;
     width: 100%
 }
 
@@ -428,8 +423,8 @@ img {
     border: none;
     color: #fff;
     font-weight: bold;
-    height: 42px;
-    padding: 0.5rem 2.25rem;
+    height: 2em;
+    padding: 0rem 2.25em;
     vertical-align: top;
     line-height: 42px 1;
     text-align: center;
@@ -440,7 +435,7 @@ img {
 
 @media print, screen and (min-width: 40em) {
     .oa_eoy.reveal .oxfam-lightbox .oxfam-button__pointed {
-        font-size:2.4rem
+        font-size:1.75em
     }
 }
 
@@ -448,8 +443,8 @@ img {
     left: 100%;
     border: 18px solid transparent;
     border-left-color: #E70052;
-    border-width: 21px;
-    margin-top: -21px;
+    border-width: 1em;
+    margin-top: -1em;
     content: " ";
     height: 0;
     top: 50%;
@@ -469,6 +464,7 @@ img {
 .oa_eoy.reveal .oxfam-lightbox .oxfam-button__close {
     background-image: none;
     background-color: #333;
+    border: 0 none;
     width: 40px;
     height: 40px;
     padding: 5px;
@@ -986,7 +982,7 @@ img {
 
 </style>
 
-<div class="reveal-overlay" style="display: none;">
+<div class="reveal-overlay" style="display: block;">
     <div class="reveal oa_eoy eoy_seeme" id="ousLightbox" data-formurl="https://secure2.oxfamamerica.org/page/content/donate" role="dialog" aria-hidden="false"  tabindex="-1">
         <svg width="0" height="0" class="hidden">
             <defs>
@@ -1018,7 +1014,7 @@ img {
                     </div><!-- END subsection -->
                 </div><!-- END primary -->
                 <div class="col secondary">
-                    <h1>Change a life</h1>
+                    <h1 class="font-headline">Change a life</h1>
                         <p class="nonmobile">Help families find safety and escape poverty. You have the power to make a difference.</p>
 
                         <div class="subsection dollarhandles">
@@ -1064,4 +1060,3 @@ img {
         </div><!-- END .oxfam-lightbox -->
     </div>
 </div>
-
