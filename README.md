@@ -88,24 +88,59 @@ Additional properties can be added to the array but they must be handled by the
 javascript (described next) that acts upon them.  This is done in the switch
 statement in the alterLink function in geo_helpers.js.
 
+The PHP method you have created must be called in an appropriate Drupal hook.
+See ox_geovariation.module for examples of existing hooks that call GeoVariation
+::initialise methods.
+
 2. Modifying the page with jQuery
 
 Add a new .js file in the js/ directory which will contain jQuery code to
-actually make the geo variation to the page. call_to_action.js can be used as a
+actually make the geo variation to the page. modal_seasonal.js can be used as a
 template for this. The file should be named appropriately.
 
 Add a library to ox_geovariation.libraries.yml to include the new js file you
 added. See call_to_action and donate libraries in that file for examples of how
 this is done.
 
-See call_to_action.js or donate.js for an example of the javascript that should
-go in your new file. If the element(s) to be modified are links, the function
-oxGeovariation.alterLink() can be called. This takes two arguments: The element
-object to be modified and the array of properties for each geolocation that was
-added to the drupalSettings in step 1 above.
+See modal_seasonal.js or for an example of the javascript that should
+go in your new file.
+
+You'll notice that modal_seasonal.js has two main code blocks: The Drupal
+behaviour that attaches a function to the appropriate element in the DOM of the
+page and a callback (`modalSeasonalHelper` in this case) that will be called
+when the country code has been successfully fetched. (See Asynchronous
+Javascript below).
+
+If the element(s) to be modified are links, the function
+oxGeovariation.alterLink() can be called instead of writing your own. This takes
+two arguments: The element object to be modified and the array of properties for
+each geolocation that was added to the drupalSettings in step 1 above.
 
 #### Changes to the theme
 
 It is likely necessary to make some changes to the theme of the field that you
 are adding a geo variation for. This will be in the form of a twig template and
 will be added to the oxfaminto theme in oxfamint/drupal/templates.
+
+#### The geovariation CSS class
+
+When the page has been updated with geo variations, it is sometimes useful to
+identify altered elements with a CSS class. For example, sometimes an element
+is not visible until the geo variation has applied so it is useful to add a CSS
+class that makes the element shown. See affiliate_link_block.js for an example
+of this.
+
+### Asynchronous Javascript
+
+Javascript that has to run on the DOM only _after_ the geovariation has been
+made has to run asynchronously. This is because we don't know how long it will
+take to fetch the country code the first time we fetch it from the HTTP headers.
+
+See the `trigger` method in `geo_helpers.js`. This method takes a callback
+function that will be run when the country code has been successfully fetched.
+Until this happens, the trigger method recursively calls itself a limited number
+of times. During this time other javascript processes can still run.
+
+If the country code is not fetched successfully after the limited number of
+recursive tries, a message is written to the console and the geo variation is
+aborted.
