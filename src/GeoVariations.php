@@ -171,8 +171,8 @@ class GeoVariations {
         $executives = $node->get('field_executives')->getValue();
         foreach ($executives as $executive_ids) {
           $executive = Paragraph::load($executive_ids['target_id']);
-          $title = $executive->get('field_title')->getString();
-          $affiliate[$title] = $executive->get('field_name')->getString();
+          $title = static::convertMigratedExecutiveTitle($executive->get('field_title')->getString());
+          $affiliate['executives'][$title] = $executive->get('field_name')->getString();
         }
 
         $address_ids = $node->get('field_address')->getValue();
@@ -275,6 +275,44 @@ class GeoVariations {
   public static function alterModalSeasonal(array &$variables) {
     if ($variables['elements']['#id'] === 'oxfammodalseasonal') {
       $variables['#attached']['library'][] = 'ox_geovariation/modal_seasonal';
+    }
+  }
+
+  /**
+   * Provides hard coded conversions for some migrated executive titles.
+   *
+   * @param string $title
+   *   The original executive title.
+   *
+   * @return string
+   *   A more human readable title, if applicable or the original executive
+   *   title if not.
+   */
+  private static function convertMigratedExecutiveTitle(string $title) {
+    switch ($title) {
+      case 'chair':
+        return 'Chair';
+
+      case 'director':
+        return 'Director';
+
+      case 'president':
+        return 'President';
+
+      case 'ceo':
+        return 'CEO';
+
+      case 'treasurer':
+        return 'Treasurer';
+
+      case 'depchair':
+        return 'Department Chair';
+
+      case 'exec':
+        return 'Exec';
+
+      default:
+        return $title;
     }
   }
 
