@@ -291,29 +291,39 @@ class GeoVariations {
   private static function convertMigratedExecutiveTitle(string $title) {
     switch ($title) {
       case 'chair':
-        return 'Chair';
+        // @todo: There's a nasty smell about this. I'm not sure we should be
+        // using a t() function meant for procedural code in a static method.
+        $newTitle = t('Chair');
+        break;
 
       case 'director':
-        return 'Director';
+        $newTitle = t('Director');
+        break;
 
       case 'president':
-        return 'President';
+        $newTitle = t('President');
+        break;
 
       case 'ceo':
-        return 'CEO';
+        $newTitle = t('CEO');
+        break;
 
       case 'treasurer':
-        return 'Treasurer';
+        $newTitle = t('Treasurer');
+        break;
 
       case 'depchair':
-        return 'Department Chair';
+        $newTitle = t('Department Chair');
+        break;
 
       case 'exec':
-        return 'Exec';
+        $newTitle = t('Exec');
+        break;
 
       default:
-        return $title;
+        return (string) $title;
     }
+    return (string) $newTitle;
   }
 
 }
