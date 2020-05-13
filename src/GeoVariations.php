@@ -150,45 +150,44 @@ class GeoVariations {
    */
   public static function loadAffiliates() {
     $affiliates = [];
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-    $query = \Drupal::entityQuery('node')
-      ->condition('status', 1)
-      ->condition('type', 'oxfam_affiliate');
-    $nids = $query->execute();
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $nodes = $node_storage->loadByProperties(['status' => 1, 'type' => 'oxfam_affiliate']);
 
-    foreach ($nids as $nid) {
-      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-
-      if (!empty($node)) {
-        $countryCode = $node->get('field_country_code')->getString();
-
-        $affiliate = [
-          'country_code' => $countryCode,
-          'title' => $node->get('title')->getString(),
-          'url' => $node->get('field_url_site')->getString(),
-        ];
-
-        $executives = $node->get('field_executives')->getValue();
-        foreach ($executives as $executive_ids) {
-          $executive = Paragraph::load($executive_ids['target_id']);
-          $title = static::convertMigratedExecutiveTitle($executive->get('field_title')->getString());
-          $affiliate['executives'][$title] = $executive->get('field_name')->getString();
-        }
-
-        $address_ids = $node->get('field_address')->getValue();
-        $addresses = [];
-        foreach ($address_ids as $address_id) {
-          $address_id = $address_id['target_id'];
-          $address_entity = Paragraph::load($address_id);
-          $addresses[$address_id]['phone'] = $address_entity->get('field_phone')->getString();
-          $addresses[$address_id]['fax'] = $address_entity->get('field_fax')->getString();
-          $addresses[$address_id]['email'] = $address_entity->get('field_email')->getString();
-          $addresses[$address_id]['address'] = $address_entity->field_address->view();
-        }
-        $affiliate['addresses'] = $addresses;
-
-        $affiliates[$countryCode] = $affiliate;
+    foreach ($nodes as $node) {
+      if ($node->hasTranslation($langcode)) {
+        $node = $node->getTranslation($langcode);
       }
+
+      $countryCode = $node->get('field_country_code')->getString();
+
+      $affiliate = [
+        'country_code' => $countryCode,
+        'title' => $node->get('title')->getString(),
+        'url' => $node->get('field_url_site')->getString(),
+      ];
+
+      $executives = $node->get('field_executives')->getValue();
+      foreach ($executives as $executive_ids) {
+        $executive = Paragraph::load($executive_ids['target_id']);
+        $title = static::convertMigratedExecutiveTitle($executive->get('field_title')->getString());
+        $affiliate['executives'][$title] = $executive->get('field_name')->getString();
+      }
+
+      $address_ids = $node->get('field_address')->getValue();
+      $addresses = [];
+      foreach ($address_ids as $address_id) {
+        $address_id = $address_id['target_id'];
+        $address_entity = Paragraph::load($address_id);
+        $addresses[$address_id]['phone'] = $address_entity->get('field_phone')->getString();
+        $addresses[$address_id]['fax'] = $address_entity->get('field_fax')->getString();
+        $addresses[$address_id]['email'] = $address_entity->get('field_email')->getString();
+        $addresses[$address_id]['address'] = $address_entity->field_address->view();
+      }
+      $affiliate['addresses'] = $addresses;
+
+      $affiliates[$countryCode] = $affiliate;
     }
 
     return $affiliates;
