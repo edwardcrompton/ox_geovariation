@@ -171,6 +171,11 @@ class GeoVariations {
       $executives = $node->get('field_executives')->getValue();
       foreach ($executives as $executive_ids) {
         $executive = Paragraph::load($executive_ids['target_id']);
+
+        if ($executive->hasTranslation($langcode)) {
+          $executive = $executive->getTranslation($langcode);
+        }
+
         $title = static::convertMigratedExecutiveTitle($executive->get('field_title')->getString());
         $affiliate['executives'][$title] = $executive->get('field_name')->getString();
       }
