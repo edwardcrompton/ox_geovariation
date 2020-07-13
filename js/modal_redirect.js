@@ -14,8 +14,6 @@
 
   var modalRedirectHelper = {
 
-    redirectToCountrySiteFlagName: 'ox_geovariation_stay_on_this_site',
-
     countrySettings: {
       us: {
         country: 'us',
@@ -54,17 +52,17 @@
     modalCallback: function(country) {
       countryData = this.countrySettings[country];
       // Get the redirect session variable if it exists.
-      var redirectToCountrySite = this.getSessionValue(redirectToCountrySiteFlagName);
+      var redirectToCountrySite = oxGeovariation.getSessionValue('ox_geovariation_stay_on_this_site');
 
-      if (redirectToCountrySite === true) {
+      if (redirectToCountrySite === 'yes') {
         window.location.href = countryData.url;
       }
       else if (redirectToCountrySite === null) {
-        this.showModalDialog();
+        this.showModalDialog(country);
       }
     },
 
-    showModalDialog: function() {
+    showModalDialog: function(country) {
       modalRedirect = $( "#modal-redirect" );
       // Update text in the dialog
       modalRedirect.addClass('modal-redirect--' + country);
@@ -79,13 +77,12 @@
         dialogClass: 'modal-redirect-dialog',
         modal: true,
       });
-      modalRedirect.show({title: 'Subscribe To Newsletter'});
 
       // Bind the click event to the positive link.
       $('.modal-redirect__link--positive').on('click', function(event) {
         event.preventDefault();
         // Set the session variable and redirect to the correct site.
-        sessionStorage.setItem(redirectToCountrySiteFlagName, true);
+        oxGeovariation.setSessionValue('ox_geovariation_stay_on_this_site', 'yes');
         window.location.href = countryData.url;
       });
 
@@ -93,7 +90,7 @@
       $('.modal-redirect__link--negative').on('click', function(event) {
         event.preventDefault();
         // Set the cookie so next time we don't invoke this dialog
-        sessionStorage.setItem(redirectToCountrySiteFlagName, false);
+        oxGeovariation.setSessionValue('ox_geovariation_stay_on_this_site', 'no');
         theDialog.dialog("close");
       });
     }
