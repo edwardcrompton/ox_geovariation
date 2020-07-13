@@ -17,12 +17,17 @@
         })
 
         // Add a select list with the affiliates as options
-        selectElement = '<label for="affiliate-selector" class="inline-block pr-6">' + Drupal.t('Choose an Oxfam affiliate') + '</label><select id="affiliate-selector">';
-        for (affiliateCode in affiliateList) {
-          selectElement = selectElement + '<option value="' + affiliateCode + '">' + affiliateList[affiliateCode] + '</option>';
+        var selectElementLabel = '<label for="affiliate-selector" class="inline-block pr-6">' + Drupal.t('Choose an Oxfam affiliate') + '</label>';
+
+        var option;
+        var selectElement = $('<select>').prop('id', 'affiliate-selector');
+
+        for (const affiliateCode in affiliateList) {
+          option = $("<option>").prop('value', affiliateCode).text(affiliateList[affiliateCode])
+          selectElement.append(option);
         }
-        selectElement = selectElement + '</select>';
-        $('#block-oxfamnearyou .near-you .affiliate:first').before(selectElement);
+        selectElement.val(usersCountryCode);
+        $('#block-oxfamnearyou .near-you .affiliate:first').before(selectElementLabel).before(selectElement);
 
         // Add a listener for our new select list to alter the visible fields when selected
         $('#affiliate-selector').change(function() {
