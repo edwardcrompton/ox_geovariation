@@ -13,6 +13,9 @@
   };
 
   var modalRedirectHelper = {
+
+    redirectToCountrySiteFlagName: 'ox_geovariation_stay_on_this_site',
+
     countrySettings: {
       us: {
         country: 'us',
@@ -50,71 +53,50 @@
 
     modalCallback: function(country) {
       countryData = this.countrySettings[country];
-      // Get the redirect cookie if it exists.
-      var redirect_cookie = this.getCookieValue('oi_1234567_new_country_detect');
+      // Get the redirect session variable if it exists.
+      var redirectToCountrySite = this.getSessionValue(redirectToCountrySiteFlagName);
 
-      // If the redirect cookie has been set and has the value 'no' then issue
-      // a redirect. The value 'no' indicates the user does NOT want to stay on
-      // the international site.
-      if (redirect_cookie == 'no') {
+      if (redirectToCountrySite === true) {
         window.location.href = countryData.url;
       }
-
-      // Check if the redirect cookie has not been set.
-      if (redirect_cookie === false) {
-        modalRedirect = $( "#modal-redirect" );
-        // Update text in the dialog
-        modalRedirect.addClass('modal-redirect--' + country);
-        modalRedirect.find('.modal-redirect__title').text(countryData.title);
-        modalRedirect.find('.modal-redirect__description').text(countryData.description);
-        modalRedirect.find('.modal-redirect__link--positive').html(countryData.positive_text);
-        modalRedirect.find('.modal-redirect__link--negative').html(countryData.negative_text);
-
-        // Load up the modal dialog
-        theDialog = modalRedirect.dialog(modalRedirect,{
-          width: '90%',
-          dialogClass: 'modal-redirect-dialog',
-          modal: true,
-        });
-        modalRedirect.show({title: 'Subscribe To Newsletter'});
-
-        // Bind the click event to the positive link.
-        $('.modal-redirect__link--positive').on('click', function(event) {
-          event.preventDefault();
-          // Set the cookie and redirect to the correct site.
-          $.cookie("oi_1234567_new_country_detect", "no", {expires: 720, path: '/'});
-          window.location.href = countryData.url;
-        });
-
-        // Bind the click event to the negative link.
-        $('.modal-redirect__link--negative').on('click', function(event) {
-          event.preventDefault();
-          // Set the cookie so next time we don't invoke this dialog
-          $.cookie("oi_1234567_new_country_detect", "yes", {expires: 720, path: '/'});
-          theDialog.dialog("close");
-        });
+      else if (redirectToCountrySite === null) {
+        this.showModalDialog();
       }
     },
 
-    /**
-     * Returns the cookie value if found otherwise false.
-     *
-     * @param cookie_name
-     *   The cookie to search for.
-     *
-     * @return bool|{*}
-     *   Returns false if not found or the cookie object.
-     */
-    getCookieValue: function(cookie_name) {
-      if ($.cookie(cookie_name) === null || $.cookie(cookie_name) === ""
-          || $.cookie(cookie_name) === "null" || $.cookie(cookie_name) === undefined) {
-        //no cookie
-        return false;
-      }
-      else {
-        // we have cookie, so return cookie value
-        return $.cookie(cookie_name);
-      }
+    showModalDialog: function() {
+      modalRedirect = $( "#modal-redirect" );
+      // Update text in the dialog
+      modalRedirect.addClass('modal-redirect--' + country);
+      modalRedirect.find('.modal-redirect__title').text(countryData.title);
+      modalRedirect.find('.modal-redirect__description').text(countryData.description);
+      modalRedirect.find('.modal-redirect__link--positive').html(countryData.positive_text);
+      modalRedirect.find('.modal-redirect__link--negative').html(countryData.negative_text);
+
+      // Load up the modal dialog
+      theDialog = modalRedirect.dialog(modalRedirect,{
+        width: '90%',
+        dialogClass: 'modal-redirect-dialog',
+        modal: true,
+      });
+      modalRedirect.show({title: 'Subscribe To Newsletter'});
+
+      // Bind the click event to the positive link.
+      $('.modal-redirect__link--positive').on('click', function(event) {
+        event.preventDefault();
+        // Set the session variable and redirect to the correct site.
+        sessionStorage.setItem(redirectToCountrySiteFlagName, true);
+        window.location.href = countryData.url;
+      });
+
+      // Bind the click event to the negative link.
+      $('.modal-redirect__link--negative').on('click', function(event) {
+        event.preventDefault();
+        // Set the cookie so next time we don't invoke this dialog
+        sessionStorage.setItem(redirectToCountrySiteFlagName, false);
+        theDialog.dialog("close");
+      });
     }
+
   }
 })(jQuery, Drupal);

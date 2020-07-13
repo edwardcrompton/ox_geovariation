@@ -179,5 +179,30 @@ var oxGeovariation = {
       // we have cookie, so return cookie value
       return jQuery.cookie(cookie_name);
     }
+  },
+
+  /**
+   * Returns a session storage value if found, otherwise false.
+   *
+   * @param sessionVariableName
+   *  The variable to look for.
+   *
+   * @return bool|{*}
+   *  Returns the session variable or false if not found.
+   */
+  getSessionValue: function(sessionVariableName) {
+    return sessionStorage.getItem(sessionVariableName);
+  },
+
+  /**
+   * Sets a session storage value.
+   *
+   * @param string sessionVariableName
+   *  The name of the variable to set.
+   * @param sessionVariableValue
+   *  The value to set.
+   */
+  setSessionValue: function(sessionVariableName, sessionVariableValue) {
+    sessionStorage.setItem(sessionVariableName, sessionVariableValue);
   }
 };
