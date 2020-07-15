@@ -166,36 +166,66 @@ class GeoVariations {
         'country_code' => $countryCode,
         'title' => $node->get('title')->getString(),
         'url' => $node->get('field_url_site')->getString(),
+        'executives' => static::loadExecutivesFromAffiliateNode($node, $langcode),
+        'addresses' => static::loadAddressesFromAffiliateNode($node, $langcode),
       ];
-
-      $executives = $node->get('field_executives')->getValue();
-      foreach ($executives as $executive_ids) {
-        $executive = Paragraph::load($executive_ids['target_id']);
-
-        if ($executive->hasTranslation($langcode)) {
-          $executive = $executive->getTranslation($langcode);
-        }
-
-        $title = static::convertMigratedExecutiveTitle($executive->get('field_title')->getString());
-        $affiliate['executives'][$title] = $executive->get('field_name')->getString();
-      }
-
-      $address_ids = $node->get('field_address')->getValue();
-      $addresses = [];
-      foreach ($address_ids as $address_id) {
-        $address_id = $address_id['target_id'];
-        $address_entity = Paragraph::load($address_id);
-        $addresses[$address_id]['phone'] = $address_entity->get('field_phone')->getString();
-        $addresses[$address_id]['fax'] = $address_entity->get('field_fax')->getString();
-        $addresses[$address_id]['email'] = $address_entity->get('field_email')->getString();
-        $addresses[$address_id]['address'] = $address_entity->field_address->view();
-      }
-      $affiliate['addresses'] = $addresses;
 
       $affiliates[$countryCode] = $affiliate;
     }
 
     return $affiliates;
+  }
+
+  /**
+   * Load executives from an affiliate node.
+   *
+   * @param mixed $node
+   *   The affiliate node from which to load the executives.
+   * @param mixed $langcode
+   *   The language code of the executives to load.
+   *
+   * @return array
+   *   An array of executives ordered by title.
+   */
+  protected static function loadExecutivesFromAffiliateNode($node, $langcode) {
+    $executives = $node->get('field_executives')->getValue();
+    foreach ($executives as $executive_ids) {
+      $executive = Paragraph::load($executive_ids['target_id']);
+
+      if ($executive->hasTranslation($langcode)) {
+        $executive = $executive->getTranslation($langcode);
+      }
+
+      $title = static::convertMigratedExecutiveTitle($executive->get('field_title')->getString());
+      $executivesByTitle[$title] = $executive->get('field_name')->getString();
+    }
+
+    return $executivesByTitle;
+  }
+
+  /**
+   * Load addresses from an affiliate node.
+   *
+   * @param mixed $node
+   *   The affiliate node from which to load addresses.
+   * @param mixed $langcode
+   *   The language code of the addresses to load.
+   *
+   * @return array
+   *   An array of addresses ordered by title.
+   */
+  protected static function loadAddressesFromAffiliateNode($node, $langcode) {
+    $address_ids = $node->get('field_address')->getValue();
+    $addresses = [];
+    foreach ($address_ids as $address_id) {
+      $address_id = $address_id['target_id'];
+      $address_entity = Paragraph::load($address_id);
+      $addresses[$address_id]['phone'] = $address_entity->get('field_phone')->getString();
+      $addresses[$address_id]['fax'] = $address_entity->get('field_fax')->getString();
+      $addresses[$address_id]['email'] = $address_entity->get('field_email')->getString();
+      $addresses[$address_id]['address'] = $address_entity->field_address->view();
+    }
+    return $addresses;
   }
 
   /**
