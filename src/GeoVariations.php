@@ -9,6 +9,11 @@ use Drupal\paragraphs\Entity\Paragraph;
  */
 class GeoVariations {
 
+  /**
+   * Namespace of the static cache id.
+   *
+   * @var string
+   */
   private static $cacheIdNamespace = 'ox_geovariation:';
 
   /**
@@ -309,6 +314,23 @@ class GeoVariations {
   public static function alterModalSeasonal(array &$variables) {
     if ($variables['elements']['#id'] === 'oxfammodalseasonal') {
       $variables['#attached']['library'][] = 'ox_geovariation/modal_seasonal';
+    }
+  }
+
+  /**
+   * Adds js to control the modal dialog block.
+   *
+   * @param array $variables
+   *   An array of variables from a preprocess function.
+   */
+  public static function alterModalDialog(array &$variables) {
+    if (isset($variables['elements']['content']) && isset($variables['elements']['content']['#block_content'])) {
+      $content = $variables['elements']['content']['#block_content'];
+      $bundle = $content->bundle();
+
+      if ($bundle === 'modal') {
+        $variables['#attached']['library'][] = 'ox_geovariation/modal_dialog';
+      }
     }
   }
 
