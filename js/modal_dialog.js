@@ -20,8 +20,20 @@
         return;
       }
 
-      modalRedirect = $(dialogSelector);
-      modalRedirect.show();
+      modalDialog = $(dialogSelector);
+
+      // Display the modal dialog
+      theDialog = modalDialog.dialog(modalDialog, {
+        width: '90%',
+        dialogClass: dialogSelector,
+        modal: true,
+      });
+
+      // Bind the click event to the negative link.
+      $('.modal-dialog__link--negative').on('click', function(event) {
+        event.preventDefault();
+        theDialog.dialog("close");
+      });
     }
   }
 })(jQuery, Drupal);
