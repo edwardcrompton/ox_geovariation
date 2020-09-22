@@ -25,6 +25,17 @@ var oxGeovariation = {
   },
 
   /**
+   * Fetches the two letter country code from a url parameter if set.
+   *
+   * @returns {undefined|string}
+   */
+  countryCodeFromUrl: function() {
+    var reg = new RegExp('[?&]' + 'country-code' + '=([^&#]*)', 'i');
+    var string = reg.exec(window.location.href);
+    return string ? string[1] : undefined;
+  },
+
+  /**
    * Alters a link for a specific geovariation.
    *
    * @param object linkElement

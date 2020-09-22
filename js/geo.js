@@ -6,16 +6,18 @@
  *  special country code header has been added by nginx.
  */
 (function () {
-  var countryCode = oxGeovariation.get();
   var headerName = 'Country-Code';
+  var countryCodePreset = oxGeovariation.get();
+  var countryCodeFromUrl = oxGeovariation.countryCodeFromUrl()
 
-  if (!countryCode) {
+  if (countryCodePreset && countryCodePreset.match('^[a-zA-Z]{2}$')) {
+    oxGeovariation.set(countryCodePreset);
+  }
+  else if (countryCodeFromUrl && countryCodeFromUrl.match('^[a-zA-Z]{2}$')) {
+    oxGeovariation.set(countryCodeFromUrl);
+  }
+  else {
     var url = '/geo';
-    var ip = oxGeovariation.ipFromURL();
-
-    if (ip) {
-      url += '?testip=' + ip;
-    }
 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
