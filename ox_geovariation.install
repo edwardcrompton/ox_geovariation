@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ *   Update hooks for the ox_geovariation module.
+ */
+
+/**
+ * Remove the seasonal redirect and modal redirect blocks.
+ */
+function ox_geovariation_update_8001() {
+  // Delete block configuration.
+  $configStorage = \Drupal::entityTypeManager()->getStorage('block');
+  $configEntities = $configStorage->loadMultiple(['oxfammodalseasonal', 'oxfammodalredirect']);
+  foreach($configEntities as $entity) {
+    $entity->delete();
+  }
+
+  // Delete seasonal block instance.
+  $instanceStorage = \Drupal::entityTypeManager()->getStorage('block_content');
+  $instanceEntities = $instanceStorage->loadMultiple([9]);
+  foreach($instanceEntities as $entity) {
+    $entity->delete();
+  }
+}
