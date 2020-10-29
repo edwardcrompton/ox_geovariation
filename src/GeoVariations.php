@@ -306,18 +306,6 @@ class GeoVariations {
   }
 
   /**
-   * Adds js to control the modal seasonal block.
-   *
-   * @param array $variables
-   *   An array of variables from a preprocess function.
-   */
-  public static function alterModalSeasonal(array &$variables) {
-    if ($variables['elements']['#id'] === 'oxfammodalseasonal') {
-      $variables['#attached']['library'][] = 'ox_geovariation/modal_seasonal';
-    }
-  }
-
-  /**
    * Adds js to control the modal dialog block.
    *
    * @param array $variables
