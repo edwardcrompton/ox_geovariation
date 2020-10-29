@@ -35,6 +35,10 @@ link.
 
 #### Testing
 
+In the local Lando environment nginx is not configured to work with the Geo IP
+database. However, we can emulate a request from a particular country by using a
+parameter in the URL which bypasses this functionality.
+
 In Lando, nginx is set up to use a URL query parameter 'country-code' as the
 basis of the geo location if available. This allows the two letter country code
 to be forced in our local environments. Just put ?country-code=XX on the end of
