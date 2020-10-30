@@ -13,10 +13,20 @@
 
   var modalDialogHelper = {
     modalCallback: function(country) {
-      dialogSelector = '.modal-dialog--' + country.toLowerCase();
+      countryCode = country.toLowerCase();
+      dialogSelector = '.modal-dialog--' + countryCode;
 
       // Do nothing if there is no modal dialog for the user's country.
       if ($(dialogSelector).length === 0) {
+        return;
+      }
+
+      // If the selection was already set, don't show the dialog.
+      selection = oxGeovariation.getPreviousDialogSelection(countryCode);
+      if (selection) {
+        if (selection === 'leave') {
+          window.location.href = drupalSettings.ox_geovariations_modal[countryCode].url
+        }
         return;
       }
 
@@ -29,8 +39,14 @@
         modal: true,
       });
 
+      // Bind the click event to the positive link.
+      $('.modal-dialog__link--positive').on('click', function(event) {
+        oxGeovariation.rememberSelectionIfSpecified(countryCode, 'leave');
+      });
+
       // Bind the click event to the negative link.
       $('.modal-dialog__link--negative').on('click', function(event) {
+        oxGeovariation.rememberSelectionIfSpecified(countryCode, 'stay');
         event.preventDefault();
         theDialog.dialog("close");
       });

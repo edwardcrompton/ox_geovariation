@@ -215,5 +215,33 @@ var oxGeovariation = {
    */
   setSessionValue: function(sessionVariableName, sessionVariableValue) {
     sessionStorage.setItem(sessionVariableName, sessionVariableValue);
+  },
+
+  /**
+   * Stores the user selection for a modal dialog in the session if the option
+   * to do so is set.
+   *
+   * @param string country
+   *   The two letter country code of the modal in question.
+   * @param string selection
+   *   'leave' or 'stay' depending the user's selection.
+   */
+  rememberSelectionIfSpecified: function(country, selection) {
+    if (drupalSettings.ox_geovariations_modal[country]['remember']) {
+      oxGeovariation.setSessionValue('ox_geovariations_modal_remember_selection__' + country, selection);
+    }
+  },
+
+  /**
+   * Gets the previous option the user selected from the dialog, if set.
+   *
+   * @param string country
+   *   The two letter country code of the modal in question.
+   *
+   * @return string
+   *   leave|stay depending on the user's previous selection.
+   */
+  getPreviousDialogSelection: function(country) {
+    return oxGeovariation.getSessionValue('ox_geovariations_modal_remember_selection__' + country);
   }
 };

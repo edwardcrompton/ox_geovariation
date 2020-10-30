@@ -318,6 +318,14 @@ class GeoVariations {
 
       if ($bundle === 'modal') {
         $variables['#attached']['library'][] = 'ox_geovariation/modal_dialog';
+        $remember = $content->field_modal_remember_selection->value;
+        $country = strtolower($content->field_modal_country->value);
+        $url = $content->field_modal_redirect_link->uri;
+
+        $variables['#attached']['drupalSettings']['ox_geovariations_modal'][$country] = [
+          'remember' => $remember ? TRUE : FALSE,
+          'url' => $url,
+        ];
       }
     }
   }
