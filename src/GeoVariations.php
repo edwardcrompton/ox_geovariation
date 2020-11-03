@@ -316,7 +316,8 @@ class GeoVariations {
       $content = $variables['elements']['content']['#block_content'];
       $bundle = $content->bundle();
 
-      if ($bundle === 'modal') {
+      // We won't bother showing the modal dialog to logged in users.
+      if ($bundle === 'modal' && \Drupal::currentUser()->isAnonymous()) {
         $variables['#attached']['library'][] = 'ox_geovariation/modal_dialog';
         $remember = $content->field_modal_remember_selection->value;
         $country = strtolower($content->field_modal_country->value);
