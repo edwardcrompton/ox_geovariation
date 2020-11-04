@@ -1,5 +1,14 @@
 ### Oxfam Geo Variations
 
+#### Modal dialogs
+
+The functionality for modal dialogs in this module may be better split in to a
+dedicated module in future, which has a dependency on this one. See the docs on
+[creating modal dialogs](/docs/developer-notes/modal-dialogs.md)
+
+This module handles several other 'Geo variations'. See the next section of this
+file for how these work and how to extend this module.
+
 #### Structure of this module.
 
 This module handles variations to pages depending on the geographic location of
@@ -17,7 +26,7 @@ aware of which country the user is in. In PHP we must create an array of _all_
 the possible geo variations and load them into an array that can be accessed
 with javascript. In the case of the Call to Action, this is done in
 GeoVariations::initialiseCtaLinks. The array is keyed by country code and
-contains 'href' and 'content' keys with contain the call to action link url and
+contains 'href' and 'content' keys which contain the call to action link url and
 title. This array is stored in drupalSettings.affiliateCTALinks[] so that it is
 available in javascript.
 
@@ -39,10 +48,18 @@ In the local Lando environment nginx is not configured to work with the Geo IP
 database. However, we can emulate a request from a particular country by using a
 parameter in the URL which bypasses this functionality.
 
-In Lando, nginx is set up to use a URL query parameter 'country-code' as the
-basis of the geo location if available. This allows the two letter country code
-to be forced in our local environments. Just put ?country-code=XX on the end of
-the URL you are requesting, where XX is the two letter country code.
+A URL query parameter 'country-code' will be used as the basis of the geo
+location if available. This allows the two letter country code to be forced in
+any environment, assuming it is not already set. Open a incognito browser tab
+and put ?country-code=XX on the end of the URL you are requesting, where XX is
+the two letter country code.
+
+It's also possible to modify the country code stored in the session. In Chrome
+/ Chromium, do this at Web developer tools > Application > Session storage >
+http://oxfamint.lndo.site and search the list for `Drupal.country-code.`
+
+Edit the value of this session variable to the two letter country code you
+require (e.g. GB, US, ES) and refresh the page.
 
 #### Extending this module.
 
