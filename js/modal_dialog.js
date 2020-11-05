@@ -32,12 +32,30 @@
 
       modalDialog = $(dialogSelector);
 
+      // We have two different widths of dialog, standard and large. Large is
+      // to accommodate the OUS seasonal dialog.
+      var width;
+      var dialogClass;
+      if (modalDialog.hasClass('modal-dialog-large')) {
+        width = '1020px';
+        dialogClass = 'modal-dialog-large';
+      }
+      else {
+        width = '90%';
+        dialogClass = 'modal-dialog-standard';
+      }
+
       // Display the modal dialog
       theDialog = modalDialog.dialog(modalDialog, {
-        width: '90%',
+        width: width,
         dialogClass: dialogSelector,
         modal: true,
+        classes: {
+          'ui-dialog': dialogClass,
+        }
       });
+
+      modalDialog.dialog( "option", "maxWidth", 767 );
 
       // Bind the click event to the positive link.
       $('.modal-dialog__link--positive').on('click', function(event) {
