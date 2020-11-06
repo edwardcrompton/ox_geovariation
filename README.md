@@ -6,6 +6,12 @@ The functionality for modal dialogs in this module may be better split in to a
 dedicated module in future, which has a dependency on this one. See the docs on
 [creating modal dialogs](/docs/developer-notes/modal-dialogs.md)
 
+Modal dialogs use the js library 'core/drupal.dialog' which is included in
+oxfamint.libraries.yml. This library is used when displaying the modal in the
+method modalCallback in modal_dialog.js. Styles are in _modal-dialog.scss and
+for specific blocks (e.g. US seasonal dialog) there is a custom template:
+block--modalusseasonal.html.twig
+
 This module handles several other 'Geo variations'. See the next section of this
 file for how these work and how to extend this module.
 
