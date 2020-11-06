@@ -35,20 +35,17 @@
       // We have two different widths of dialog, standard and large. Large is
       // to accommodate the OUS seasonal dialog. See _modal-dialog.scss for
       // associated styles.
-      var width;
       var dialogClass;
       if (modalDialog.hasClass('modal-dialog-large')) {
-        width = 'auto';
         dialogClass = 'modal-dialog-large';
       }
       else {
-        width = '90%';
         dialogClass = 'modal-dialog-standard';
       }
 
       // Display the modal dialog
       theDialog = modalDialog.dialog(modalDialog, {
-        width: width,
+        width: 'auto',
         dialogClass: dialogSelector,
         modal: true,
         classes: {
