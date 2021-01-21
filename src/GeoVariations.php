@@ -129,7 +129,7 @@ class GeoVariations {
 
     $affiliateLinks = [];
     foreach ($nids as $nid) {
-      $node = \Drupal::entityManager()->getStorage('node')->load($nid);
+      $node = \Drupal::service('entity_type.manager')->getStorage('node')->load($nid);
       $countryCode = $node->get('field_country_code')->getString();
       $affiliateTitle = $node->get('title')->getString();
       $affiliateLinks[$countryCode] = [

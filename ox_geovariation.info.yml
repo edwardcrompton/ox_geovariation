@@ -1,7 +1,7 @@
 name: Oxfam Geo Variations
 type: module
 description: 'Variations in the user interface based on geo location'
-core: 8.x
+core_version_requirement: ^8 || ^9
 libraries:
   - ox_geovariation/global-scripts
 package: 'Geolocation'
