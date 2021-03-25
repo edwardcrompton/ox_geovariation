@@ -2,6 +2,7 @@
 
 namespace Drupal\ox_geovariation;
 
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Url;
 
 /**
@@ -282,7 +283,7 @@ class GeoVariations {
     $affiliateLinks = [];
     foreach ($affiliates as $affiliate) {
       $countryCode = $affiliate->get('field_affiliate_country_code')->value;
-      $uri = $affiliateParagraph->get('field_affiliate_link')->uri;
+      $uri = $affiliate->get('field_affiliate_link')->uri;
       $link = static::getAffiliateHref($uri);
       $linkTitle = $affiliate->get('field_affiliate_link')->title;
       $affiliateLinks[$countryCode] = [
@@ -303,7 +304,7 @@ class GeoVariations {
    * @return string
    *   The string to set as the href value in the link.
    */
-  public static function getAffiliateHref($uri) {
+  public static function getAffiliateHref(string $uri) {
     return Url::fromUri($uri)->toString();
   }
 
