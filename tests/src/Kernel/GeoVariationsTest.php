@@ -16,16 +16,13 @@ class GeoVariationsTest extends KernelTestBase {
    * @covers ::getAffiliateHref
    */
   public function testGetAffiliateHref() {
-    $affiliateParagraph = new MockAffiliateCtaParagraph('https://oxfam.org.uk/donate');
-    $href = GeoVariations::getAffiliateHref($affiliateParagraph);
+    $href = GeoVariations::getAffiliateHref('https://oxfam.org.uk/donate');
     $this->assertEquals('https://oxfam.org.uk/donate', $href);
 
-    $affiliateParagraph = new MockAffiliateCtaParagraph('internal:/en/about');
-    $href = GeoVariations::getAffiliateHref($affiliateParagraph);
+    $href = GeoVariations::getAffiliateHref('internal:/en/about');
     $this->assertEquals('/en/about', $href);
 
-    $affiliateParagraph = new MockAffiliateCtaParagraph('base:node/1');
-    $href = GeoVariations::getAffiliateHref($affiliateParagraph);
+    $href = GeoVariations::getAffiliateHref('base:node/1');
     $this->assertEquals('/node/1', $href);
 
     // @todo Add a test in here for entity:node/1

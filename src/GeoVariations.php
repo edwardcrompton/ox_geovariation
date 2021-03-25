@@ -2,7 +2,6 @@
 
 namespace Drupal\ox_geovariation;
 
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Url;
 
 /**
@@ -283,7 +282,8 @@ class GeoVariations {
     $affiliateLinks = [];
     foreach ($affiliates as $affiliate) {
       $countryCode = $affiliate->get('field_affiliate_country_code')->value;
-      $link = static::getAffiliateHref($affiliate);
+      $uri = $affiliateParagraph->get('field_affiliate_link')->uri;
+      $link = static::getAffiliateHref($uri);
       $linkTitle = $affiliate->get('field_affiliate_link')->title;
       $affiliateLinks[$countryCode] = [
         'href' => $link,
@@ -297,14 +297,14 @@ class GeoVariations {
   /**
    * Gets the value for the href property in a Call to Action link.
    *
-   * @param Drupal\paragraphs\Entity\Paragraph $affiliateParagraph
-   *   The paragraph containing the affiliate link information.
+   * @param string $uri
+   *   The uri in the form it is fetched from the paragraph field.
    *
    * @return string
    *   The string to set as the href value in the link.
    */
-  public static function getAffiliateHref(Paragraph $affiliateParagraph) {
-    return Url::fromUri($affiliateParagraph->get('field_affiliate_link')->uri)->toString();
+  public static function getAffiliateHref($uri) {
+    return Url::fromUri($uri)->toString();
   }
 
   /**
