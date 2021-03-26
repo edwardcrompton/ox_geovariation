@@ -4,6 +4,7 @@ namespace Drupal\ox_geovariation;
 
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Url;
+use Drupal\Core\Entity\EntityBase;
 
 /**
  * Class GeoVariations.
@@ -131,7 +132,7 @@ class GeoVariations {
     $affiliateLinks = [];
     foreach ($nids as $nid) {
       $node = \Drupal::service('entity_type.manager')->getStorage('node')->load($nid);
-      $countryCode = $node->get('field_country_code')->getString();
+      $countryCode = static::getCountryCodeFromEntity($node, 'field_country_code');
       $affiliateTitle = $node->get('title')->getString();
       $affiliateLinks[$countryCode] = [
         'href' => $node->get($field_name)->getString(),
@@ -282,7 +283,7 @@ class GeoVariations {
 
     $affiliateLinks = [];
     foreach ($affiliates as $affiliate) {
-      $countryCode = $affiliate->get('field_affiliate_country_code')->value;
+      $countryCode = static::getCountryCodeFromEntity($affiliate, 'field_affiliate_country_code');
       $uri = $affiliate->get('field_affiliate_link')->uri;
       $linkTitle = $affiliate->get('field_affiliate_link')->title;
 
@@ -312,6 +313,21 @@ class GeoVariations {
    */
   public static function getAffiliateHref(string $uri) {
     return Url::fromUri($uri)->toString();
+  }
+
+  /**
+   * Gets an upper case two letter country code from and entity.
+   *
+   * @param Drupal\Core\Entity\EntityBase $entity
+   *   The entity object.
+   * @param string $fieldName
+   *   The name of the field containing the country code.
+   *
+   * @return string
+   *   The two letter country code.
+   */
+  public static function getCountryCodeFromEntity(EntityBase $entity, string $fieldName) {
+    return strtoupper($entity->get($fieldName)->value);
   }
 
   /**
