@@ -284,8 +284,14 @@ class GeoVariations {
     foreach ($affiliates as $affiliate) {
       $countryCode = $affiliate->get('field_affiliate_country_code')->value;
       $uri = $affiliate->get('field_affiliate_link')->uri;
-      $link = static::getAffiliateHref($uri);
       $linkTitle = $affiliate->get('field_affiliate_link')->title;
+
+      if (!$countryCode || !$uri || !$linkTitle) {
+        continue;
+      }
+
+      $link = static::getAffiliateHref($uri);
+
       $affiliateLinks[$countryCode] = [
         'href' => $link,
         'content' => $linkTitle,
