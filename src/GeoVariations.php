@@ -167,7 +167,7 @@ class GeoVariations {
         $node = $node->getTranslation($langcode);
       }
 
-      $countryCode = $node->get('field_country_code')->getString();
+      $countryCode = static::getCountryCodeFromEntity($node, 'field_country_code');
 
       $affiliate = [
         'country_code' => $countryCode,
