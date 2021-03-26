@@ -25,6 +25,7 @@
           var option = $("<option>").prop('value', affiliateCode).text(affiliateArray[affiliateCode])
           if (affiliateCode === initialAffiliateCode) {
             option.prop('selected', true);
+            option.attr('selected', 'selected');
           }
           selectElement.append(option);
         }
