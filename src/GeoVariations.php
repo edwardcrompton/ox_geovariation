@@ -7,7 +7,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityBase;
 
 /**
- * Class GeoVariations.
+ * Class Handles front end variations based on geolocation.
  */
 class GeoVariations {
 
@@ -48,18 +48,6 @@ class GeoVariations {
    * @param array $variables
    *   An array of variables from a preprocess function.
    */
-  public static function initialiseDonationLinks(array &$variables) {
-    $affiliateLinks = static::loadDonationLinks();
-    $variables['#attached']['drupalSettings']['affiliateDonationLinks'] = $affiliateLinks;
-    $variables['#attached']['library'][] = 'ox_geovariation/donate';
-  }
-
-  /**
-   * Attaches the Donation link geo variation javascript for menu links.
-   *
-   * @param array $variables
-   *   An array of variables from a preprocess function.
-   */
   public static function initialiseSignupLinks(array &$variables) {
     switch ($variables['#form_id']) {
       case 'subscriber_form':
@@ -87,7 +75,7 @@ class GeoVariations {
    *   The default call to action link.
    */
   public static function defaultCtaLink(Paragraph $paragraph) {
-    // @Todo: This was bad. It used a deprecated function (Drupal::l) and it
+    // @todo This was bad. It used a deprecated function (Drupal::l) and it
     // assumed that the URI is an external one, which it isn't sometimes.
     // The underlying issue is that the CTA link field should be a _link_ field
     // not a pair of text fields.
@@ -136,7 +124,10 @@ class GeoVariations {
       $affiliateTitle = $node->get('title')->getString();
       $affiliateLinks[$countryCode] = [
         'href' => $node->get($field_name)->getString(),
-        'title' => t('@prefix @title', ['@title' => $affiliateTitle, '@prefix' => $titlePrefix]),
+        'title' => t(
+          '@prefix @title',
+          ['@title' => $affiliateTitle, '@prefix' => $titlePrefix]
+        ),
       ];
     }
 
@@ -160,7 +151,10 @@ class GeoVariations {
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $nodes = $node_storage->loadByProperties(['status' => 1, 'type' => 'oxfam_affiliate']);
+    $nodes = $node_storage->loadByProperties([
+      'status' => 1,
+      'type' => 'oxfam_affiliate',
+    ]);
 
     foreach ($nodes as $node) {
       if ($node->hasTranslation($langcode)) {
@@ -381,7 +375,7 @@ class GeoVariations {
   private static function convertMigratedExecutiveTitle(string $title) {
     switch ($title) {
       case 'chair':
-        // @todo: There's a nasty smell about this. I'm not sure we should be
+        // @todo There's a nasty smell about this. I'm not sure we should be
         // using a t() function meant for procedural code in a static method.
         $newTitle = t('Chair');
         break;
