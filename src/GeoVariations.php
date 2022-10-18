@@ -43,7 +43,22 @@ class GeoVariations {
   }
 
   /**
-   * Attaches the Donation link geo variation javascript for menu links.
+   * Attaches the Donation link geo variation javascript for main menu item.
+   *
+   * @param array $variables
+   *   An array of variables from a preprocess function.
+   */
+  public static function initialiseMainMenuDonationLink(array &$variables) {
+    $affiliateLinks = static::loadDonationLinks();
+    // @todo This is a nasty hack to only re-write the Donation link for OUS,
+    // no other affiliates. We can probably improve on this.
+    $ousLink['US'] = $affiliateLinks['US'];
+    $variables['#attached']['drupalSettings']['affiliateDonationLinks'] = $ousLink;
+    $variables['#attached']['library'][] = 'ox_geovariation/donate';
+  }
+
+  /**
+   * Attaches the Donation link geo variation javascript for sign up menu links.
    *
    * @param array $variables
    *   An array of variables from a preprocess function.
