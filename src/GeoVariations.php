@@ -50,10 +50,7 @@ class GeoVariations {
    */
   public static function initialiseMainMenuDonationLink(array &$variables) {
     $affiliateLinks = static::loadDonationLinks();
-    // @todo This is a nasty hack to only re-write the Donation link for OUS,
-    // no other affiliates. We can probably improve on this.
-    $ousLink['US'] = $affiliateLinks['US'];
-    $variables['#attached']['drupalSettings']['affiliateDonationLinks'] = $ousLink;
+    $variables['#attached']['drupalSettings']['affiliateDonationLinks'] = $affiliateLinks;
     $variables['#attached']['library'][] = 'ox_geovariation/donate';
   }
 
