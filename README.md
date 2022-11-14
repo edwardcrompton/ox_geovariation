@@ -1,24 +1,20 @@
 ### Oxfam Geo Variations
 
-#### Modal dialogs
+This is a Drupal module which uses jQuery to change certain elements in the
+HTML DOM of a page depending on the geographic location of the user. These
+variations are called 'geovariations'.
 
-The functionality for modal dialogs in this module may be better split in to a
-dedicated module in future, which has a dependency on this one. See the docs on
-[creating modal dialogs](/docs/developer-notes/modal-dialogs.md)
+For example, on Oxfam.org there is a 'Donate' link in the main menu which
+is altered to link to the donation form of the Oxfam affiate if the user is
+visiting from an affiliate country. Otherwise, it links to a general donation
+form. Geovariations also apply to Calls to Action throughout the site and links
+to newsletter sign up forms.
 
-Modal dialogs use the js library 'core/drupal.dialog' which is included in
-oxfamint.libraries.yml. This library is used when displaying the modal in the
-method modalCallback in modal_dialog.js. Styles are in _modal-dialog.scss and
-for specific blocks (e.g. US seasonal dialog) there is a custom template:
-block--modalusseasonal.html.twig
-
-This module handles several other 'Geo variations'. See the next section of this
-file for how these work and how to extend this module.
+The geovariations are applied using client side Javascript, so that a common
+HTML DOM can be served from an HTTP cache without having to know where the
+user is located.
 
 #### Structure of this module.
-
-This module handles variations to pages depending on the geographic location of
-a user. These variations are called geo variations.
 
 Geo variations are usually editable and are stored in the database. For example,
 in the case of calls to action, there is a Call to Action paragraph which
@@ -30,13 +26,13 @@ Javascript is used to query the page response headers in order to retrieve the
 two letter country code. This means that server side processing in PHP is not
 aware of which country the user is in. In PHP we must create an array of _all_
 the possible geo variations and load them into an array that can be accessed
-with javascript. In the case of the Call to Action, this is done in
+with Javascript. In the case of the Call to Action, this is done in
 GeoVariations::initialiseCtaLinks. The array is keyed by country code and
 contains 'href' and 'content' keys which contain the call to action link url and
 title. This array is stored in drupalSettings.affiliateCTALinks[] so that it is
-available in javascript.
+available to Javascript.
 
-The 'geo' javascript library defined by this module fetches the two letter
+The 'geo' Javascript library defined by this module fetches the two letter
 country code after the page has loaded and stores it in browser session storage.
 This is done in geo.js which makes a asynchronous request to the path /geo. This
 path returns a blank response that contains the 'Country-Code' header supplied
@@ -160,3 +156,18 @@ of times. During this time other javascript processes can still run.
 If the country code is not fetched successfully after the limited number of
 recursive tries, a message is written to the console and the geo variation is
 aborted.
+
+#### Modal dialogs
+
+The functionality for modal dialogs in this module may be better split in to a
+dedicated module in future, which has a dependency on this one. See the docs on
+[creating modal dialogs](/docs/developer-notes/modal-dialogs.md)
+
+Modal dialogs use the js library 'core/drupal.dialog' which is included in
+oxfamint.libraries.yml. This library is used when displaying the modal in the
+method modalCallback in modal_dialog.js. Styles are in _modal-dialog.scss and
+for specific blocks (e.g. US seasonal dialog) there is a custom template:
+block--modalusseasonal.html.twig
+
+This module handles several other 'Geo variations'. See the next section of this
+file for how these work and how to extend this module.
